@@ -28,7 +28,8 @@ uploadArchives {
                 authentication(userName: nexusUser, password: nexusPassword)
             }
 
-            version = "${version}.${buildNumber}"
+            pom.version = "0.${iteration}.${buildNumber}"
+            pom.artifactId = projectName
         }
     }
 }
