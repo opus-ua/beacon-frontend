@@ -27,6 +27,26 @@ uploadArchives {
             repository(url: "${nexusUrl}/nexus/content/repositories/snapshots/") {
                 authentication(userName: nexusUser, password: nexusPassword)
             }
+
+            version = "${version}.${buildNumber}"
         }
     }
+}
+
+uploadArchives.dependsOn(getTasksByName("assembleRelease", true))
+
+class Apk extends Jar {
+    def String getExtension() {
+        return 'apk'
+    }
+}
+
+task AppApk(type: Apk) {
+    from file("${project.projectDir}/app/build/outputs/apk/app-debug.apk")
+    from file("${project.projectDir}/app/build/outputs/apk/app-debug-unaligned.apk")
+    from file("${project.projectDir}/app/build/outputs/apk/app-release-unsigned.apk")
+}
+
+artifacts {
+    archives AppApk
 }
