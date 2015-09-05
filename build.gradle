@@ -21,6 +21,18 @@ allprojects {
     }
 }
 
+if(!hasProperty('nexusUser')) {
+    ext.nexusUser = ''
+}
+
+if(!hasProperty('nexusPassword')) {
+    ext.nexusPassword = ''
+}
+
+if(!hasProperty('buildNumber')) {
+    ext.buildNumber = 1
+}
+
 uploadArchives {
     repositories {
         mavenDeployer {
