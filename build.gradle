@@ -3,10 +3,6 @@ apply plugin: 'maven'
 
 buildscript {
     repositories {
-        maven {
-            url "${nexusUrl}/nexus/content/groups/public"
-        }
-
         jcenter()
     }
 
@@ -19,47 +15,4 @@ allprojects {
     repositories {
         jcenter()
     }
-}
-
-if(!hasProperty('nexusUser')) {
-    ext.nexusUser = ''
-}
-
-if(!hasProperty('nexusPassword')) {
-    ext.nexusPassword = ''
-}
-
-if(!hasProperty('versionNumber')) {
-    ext.versionNumber = 1
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: "${nexusUrl}/nexus/content/repositories/snapshots/") {
-                authentication(userName: nexusUser, password: nexusPassword)
-            }
-
-            pom.version = versionNumber
-            pom.artifactId = projectName
-        }
-    }
-}
-
-uploadArchives.dependsOn(getTasksByName("assembleRelease", true))
-
-class Apk extends Jar {
-    def String getExtension() {
-        return 'apk'
-    }
-}
-
-task AppApk(type: Apk) {
-    from file("${project.projectDir}/app/build/outputs/apk/app-debug.apk")
-    from file("${project.projectDir}/app/build/outputs/apk/app-debug-unaligned.apk")
-    from file("${project.projectDir}/app/build/outputs/apk/app-release-unsigned.apk")
-}
-
-artifacts {
-    archives AppApk
 }
