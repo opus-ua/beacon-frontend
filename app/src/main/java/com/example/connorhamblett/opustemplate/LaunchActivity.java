@@ -21,7 +21,7 @@ public class LaunchActivity extends Activity {
         launchNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(NextActivity.makeIntent(LaunchActivity.this, STRING_PAYLOAD));
+                // startActivity(NextActivity.makeIntent(LaunchActivity.this, STRING_PAYLOAD));
                 finish();
             }
         });

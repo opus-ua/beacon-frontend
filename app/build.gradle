@@ -50,6 +50,23 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['src/main/res']
+            assets.srcDirs = ['assets']
+        }
+
+        androidTest {
+            setRoot('src')
+            java.srcDirs = ['src/androidTest']
+            manifest.srcFile file('src/main/res/AndroidManifest.xml')
+        }
+    }
 }
 
 dependencies {
