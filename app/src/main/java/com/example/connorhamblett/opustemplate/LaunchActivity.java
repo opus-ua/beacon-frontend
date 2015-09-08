@@ -1,10 +1,11 @@
-package com.example.connorhamblett.opustemplate;
+package main.java.com.example.connorhamblett.opustemplate;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
+import com.example.connorhamblett.opustemplate.NextActivity;
+import com.example.connorhamblett.opustemplate.R;
 
 public class LaunchActivity extends Activity {
 
@@ -21,7 +22,10 @@ public class LaunchActivity extends Activity {
         launchNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // startActivity(NextActivity.makeIntent(LaunchActivity.this, STRING_PAYLOAD));
+
+                startActivity(NextActivity.makeIntent(LaunchActivity.this, STRING_PAYLOAD));
+                startActivity(NextActivity.makeIntent(LaunchActivity.this, STRING_PAYLOAD));
+
                 finish();
             }
         });
