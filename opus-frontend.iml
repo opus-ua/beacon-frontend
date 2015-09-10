@@ -4,7 +4,6 @@
     <facet type="java-gradle" name="Java-Gradle">
       <configuration>
         <option name="BUILD_FOLDER_PATH" value="$MODULE_DIR$/build" />
-<<<<<<< HEAD
         <option name="BUILDABLE" value="true" />
       </configuration>
     </facet>
@@ -18,22 +17,10 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
-=======
-        <option name="BUILDABLE" value="false" />
-      </configuration>
-    </facet>
-  </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="true">
-    <exclude-output />
-    <content url="file://$MODULE_DIR$">
->>>>>>> 2151bba18b87d4134065697912e52c5b28cfad7c
       <excludeFolder url="file://$MODULE_DIR$/.gradle" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-<<<<<<< HEAD
     <orderEntry type="library" exported="" name="opus-frontend.opus-frontend" level="project" />
-=======
->>>>>>> 2151bba18b87d4134065697912e52c5b28cfad7c
   </component>
 </module>
