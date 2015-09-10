@@ -1,4 +1,4 @@
-package main.java.com.example.connorhamblett.opustemplate;
+package com.example.connorhamblett.opustemplate;
 
 import android.app.Activity;
 import android.os.Bundle;
