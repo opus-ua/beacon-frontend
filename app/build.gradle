@@ -11,6 +11,9 @@ def getVersionString = { ->
 def getGitRevision = "git rev-parse --short HEAD".execute().text.trim()
 
 android {
+
+    useLibrary 'org.apache.http.legacy'
+
     applicationVariants.all { variant ->
 
         // rename apks with version number and git revision
@@ -44,6 +47,7 @@ android {
         versionCode 1
         versionName "${getVersionString()}-${getGitRevision}"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -52,7 +56,19 @@ android {
     }
 }
 
+tasks.withType(Test) {
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+        outputs.upToDateWhen { false }
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.0.0'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.hamcrest:hamcrest-library:1.3'
+    testCompile 'org.apache.maven:maven-ant-tasks:2.1.3'
+    testCompile('org.robolectric:robolectric:3.0')
 }
