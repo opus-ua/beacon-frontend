@@ -1,4 +1,4 @@
-package com.example.connorhamblett.opustemplate;
+package org.opus.beacon;
 
 /**
  * Created by connorhamblett on 9/13/15.

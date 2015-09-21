@@ -1,4 +1,4 @@
-package com.example.connorhamblett.opustemplate;
+package org.opus.beacon;
 
 import android.location.Location;
 import android.media.Image;
