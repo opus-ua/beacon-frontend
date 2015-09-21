@@ -1,4 +1,4 @@
-package com.example.connorhamblett.opustemplate;
+package org.opus.beacon;
 
 import android.app.Activity;
 import android.content.Context;

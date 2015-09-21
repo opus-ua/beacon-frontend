@@ -1,11 +1,11 @@
-package com.example.connorhamblett.opustemplate;
+package org.opus.beacon;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import com.example.connorhamblett.opustemplate.NextActivity;
-import com.example.connorhamblett.opustemplate.R;
+import org.opus.beacon.NextActivity;
+import org.opus.beacon.R;
 
 public class LaunchActivity extends Activity {
 
