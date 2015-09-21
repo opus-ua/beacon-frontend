@@ -1,4 +1,4 @@
-package com.example.connorhamblett.opustemplate;
+package org.opus.beacon;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
