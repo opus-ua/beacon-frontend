@@ -3,18 +3,24 @@ package org.opus.beacon;
 import android.location.Location;
 import android.media.Image;
 
-/**
- * Created by connorhamblett on 9/13/15.
- */
 public class Beacon {
     private Location geoLocation;
     private double popularity;
     private String description;
-    private String user;
-    private Image image;
+    private User owner;
 
-    public void editDescription(String newDescription)
-    {
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    private Image image;
+    private double postID;
+
+    public void editDescription(String newDescription) {
         this.description = newDescription;
     }
 
@@ -23,13 +29,15 @@ public class Beacon {
         this.popularity = newPopularity;
     }
 
-    public Beacon(Location location, String newDescription, String newUser, Image newImage)
+
+    public Beacon(Location location, String newDescription, User newOwner, Image newImage)
     {
         this.geoLocation = location;
         this.description = newDescription;
-        this.user = newUser;
+        this.owner = newOwner;
         this.image = newImage;
         this.popularity = 0.0;
+        this.ID = getNewIDFromServer();
     }
 
 
