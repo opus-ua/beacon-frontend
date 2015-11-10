@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="48"
+   height="48"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="camera_button.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="18.9375"
+     inkscape:cx="24"
+     inkscape:cy="24"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-paths="true"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-bbox-edge-midpoints="true"
+     inkscape:snap-bbox-midpoints="true"
+     inkscape:object-paths="true"
+     inkscape:snap-intersection-paths="true"
+     inkscape:object-nodes="true"
+     inkscape:snap-smooth-nodes="true"
+     inkscape:snap-midpoints="true"
+     inkscape:snap-object-midpoints="true"
+     inkscape:snap-center="true"
+     inkscape:window-width="1855"
+     inkscape:window-height="1056"
+     inkscape:window-x="65"
+     inkscape:window-y="37"
+     inkscape:window-maximized="1"
+     showborder="false"
+     inkscape:showpageshadow="false" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1004.3622)">
+    <g
+       id="g3845">
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/jonathan/Documents/dev/opus/beacon-frontend/app/src/main/res/drawable/camera_button.svg.png"
+         transform="matrix(0.38632175,0,0,0.48735974,-50.341465,772.59092)"
+         d="m 254.55845,524.81 c 0,27.19723 -27.81403,49.24494 -62.12438,49.24494 -34.31035,0 -62.12439,-22.04771 -62.12439,-49.24494 0,-27.19723 27.81404,-49.24494 62.12439,-49.24494 34.31035,0 62.12438,22.04771 62.12438,49.24494 z"
+         sodipodi:ry="49.244938"
+         sodipodi:rx="62.124382"
+         sodipodi:cy="524.81"
+         sodipodi:cx="192.43407"
+         id="path3012"
+         style="fill:#b3b3b3;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         sodipodi:type="arc" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/jonathan/Documents/dev/opus/beacon-frontend/app/src/main/res/drawable/camera_button.svg.png"
+         transform="matrix(0.3460799,0,0,0.4365931,-42.597562,799.23376)"
+         d="m 254.55845,524.81 c 0,27.19723 -27.81403,49.24494 -62.12438,49.24494 -34.31035,0 -62.12439,-22.04771 -62.12439,-49.24494 0,-27.19723 27.81404,-49.24494 62.12439,-49.24494 34.31035,0 62.12438,22.04771 62.12438,49.24494 z"
+         sodipodi:ry="49.244938"
+         sodipodi:rx="62.124382"
+         sodipodi:cy="524.81"
+         sodipodi:cx="192.43407"
+         id="path3012-0"
+         style="fill:#e6e6e6;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         sodipodi:type="arc" />
+    </g>
+  </g>
+</svg>
