@@ -1,11 +1,11 @@
 package org.opus.beacon;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import org.opus.beacon.NextActivity;
-import org.opus.beacon.R;
+
 
 public class LaunchActivity extends Activity {
 
@@ -18,17 +18,14 @@ public class LaunchActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button launchNextButton = (Button) findViewById(R.id.launch_next_activity_button);
-        launchNextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        final Button launchNextButton = (Button) findViewById(R.id.launch_next_activity_button);
 
-                startActivity(NextActivity.makeIntent(LaunchActivity.this, STRING_PAYLOAD));
-                startActivity(NextActivity.makeIntent(LaunchActivity.this, STRING_PAYLOAD));
+    }
 
-                finish();
-            }
-        });
+    public void onLaunchButtonClick(View view) {
+        Intent launchThreadView = new Intent(this, ThreadView.class);
+        launchThreadView.putExtra("beaconID",1);
+        startActivity(launchThreadView);
     }
 }
 

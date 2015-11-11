@@ -1,7 +1,7 @@
 package org.opus.beacon;
 
+import android.graphics.Bitmap;
 import android.location.Location;
-import android.media.Image;
 
 public class Beacon {
     private Location geoLocation;
@@ -9,15 +9,15 @@ public class Beacon {
     private String description;
     private User owner;
 
-    public Image getImage() {
+    public Bitmap getImage() {
         return image;
     }
 
-    public void setImage(Image image) {
+    public void setImage(Bitmap image) {
         this.image = image;
     }
 
-    private Image image;
+    private Bitmap image;
     private double postID;
 
     public void editDescription(String newDescription) {
@@ -30,14 +30,14 @@ public class Beacon {
     }
 
 
-    public Beacon(Location location, String newDescription, User newOwner, Image newImage)
+    public Beacon(Location location, String newDescription, User newOwner, Bitmap newImage, double postID)
     {
         this.geoLocation = location;
         this.description = newDescription;
         this.owner = newOwner;
         this.image = newImage;
         this.popularity = 0.0;
-        this.ID = getNewIDFromServer();
+        this.postID = postID;
     }
 
 

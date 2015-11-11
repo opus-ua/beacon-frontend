@@ -54,6 +54,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/DEPENDENCIES'
+
+    }
 }
 
 tasks.withType(Test) {
@@ -66,9 +75,24 @@ tasks.withType(Test) {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.0.0'
-
+    compile 'org.springframework.android:spring-android-rest-template:2.0.0.M1'
     testCompile 'junit:junit:4.12'
     testCompile 'org.hamcrest:hamcrest-library:1.3'
     testCompile 'org.apache.maven:maven-ant-tasks:2.1.3'
-    testCompile('org.robolectric:robolectric:3.0')
+    testCompile 'org.robolectric:robolectric:3.0'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.1'
+    compile files('libs/httpclient-4.5.1.jar')
+    compile files('libs/httpcore-4.4.3.jar')
+    compile files('libs/httpmime-4.5.1.jar')
+    compile files('libs/mail.jar')
 }
+
+repositories {
+    maven {
+        url 'http://repo.spring.io/milestone'
+    }
+
+
+}
+
+

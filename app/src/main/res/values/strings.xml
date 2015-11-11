@@ -19,4 +19,7 @@
     <string name="label_launch_next">Launch Next</string>
     <string name="label_send_message">Send</string>
     <string name="message_input_hint_edit_text">Enter a message</string>
+    <string name="heart_success">Hearted</string>
+    <string name="heart_failure">Error Hearting</string>
+    <string name="server_error">Server Error</string>
 </resources>
