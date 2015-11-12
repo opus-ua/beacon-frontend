@@ -31,10 +31,11 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
 public class RestClient {
+    private string backendUrl = "http://gnossen.com:8765";
     public Thread getThread(String postID) {
         try {
             HttpClient client = new DefaultHttpClient();
-            String getURL = "http://gnossen.com:8765/beacon/"+postID;
+            String getURL = backendUrl + "/beacon/"+postID;
             HttpGet get = new HttpGet(getURL);
             HttpResponse response = client.execute(get);
             ByteArrayDataSource ds = new ByteArrayDataSource(response.getEntity().getContent(), "multipart/form-data");
@@ -68,12 +69,12 @@ public class RestClient {
     public String heartPost(String postID,Context context) {
         try {
             HttpClient client = new DefaultHttpClient();
-            String postURL = "http://gnossen.com:8765/heart/" + postID;
+            String postURL = backendUrl + "/heart/" + postID;
             HttpPost post = new HttpPost(postURL);
             HttpResponse response = client.execute(post);
             int status = response.getStatusLine().getStatusCode();
 
-            if (status < 400){
+            if (status == 200){
                 return context.getResources().getString(R.string.heart_success);
             }
             else {

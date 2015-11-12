@@ -46,17 +46,12 @@ public class ThreadView extends Activity {
         context = this;
         backend = new RestClient();
         new GetActiveThread().execute();
-
-
-
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         new GetActiveThread().execute();
-
     }
 
     public void onCommentHeart (View view)
@@ -71,7 +66,6 @@ public class ThreadView extends Activity {
         hearts.setText(Integer.toString(heartedComment.getHearts()));
         heart.setEnabled(false);
         new heartPost().execute(Integer.toString(heartedComment.getId()));
-
     }
 
     public void onThreadHeart (View view) {
@@ -84,13 +78,9 @@ public class ThreadView extends Activity {
         new heartPost().execute(Integer.toString(activeThread.getId()));
     }
 
-
-
     private class GetActiveThread extends AsyncTask <Void, Void, Thread> {
         @Override
         protected Thread doInBackground(Void... params) {
-
-
             return backend.getThread(postID);
         }
 
@@ -129,8 +119,7 @@ public class ThreadView extends Activity {
             TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
             v.setTextColor(Color.WHITE);
             v.setBackgroundColor(0x00000000);
-            toast.show();        }
+            toast.show();
+        }
     }
-
-
 }
