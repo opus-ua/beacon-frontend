@@ -26,13 +26,4 @@ public class ApplicationTest {
         assertNotNull(mainActivity);
         assertNotNull(button);
     }
-
-    @Test
-    public void testLaunchNextActivity() {
-        Activity mainActivity = Robolectric.setupActivity(LaunchActivity.class);
-        Button button = (Button) mainActivity.findViewById(R.id.launch_next_activity_button);
-
-        String expectedButtonText = mainActivity.getString(R.string.label_launch_next); 
-        assertEquals(expectedButtonText, button.getText().toString());
-    }
 }
