@@ -4,42 +4,44 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="18dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/commentUser"
         android:textSize="@dimen/usernameSize"
+        android:paddingLeft="12dp"
         android:textStyle="bold"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:orientation="horizontal">
 
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/commentText"
             android:textSize="@dimen/descriptionSize"
-            android:layout_weight="2"/>
+            android:layout_weight="2"
+            android:paddingLeft="12dp"/>
         <LinearLayout
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:orientation="horizontal">
             <ImageButton
                 android:layout_width="@dimen/heartHeight"
                 android:layout_height="@dimen/heartHeight"
                 android:id="@+id/commentHeart"
                 android:onClick="onCommentHeart"
                 android:background="@null"
-                android:layout_gravity="top"/>
+                android:layout_gravity="center"
+                android:tint="@color/heart_gray"/>
             <TextView
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/numCommentHearts"
                 android:textSize="@dimen/numHearts"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center" />
         </LinearLayout>
 
     </LinearLayout>
