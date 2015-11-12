@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:id="@+id/commentUser"
+        android:textSize="@dimen/usernameSize"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/commentText"
+            android:textSize="@dimen/descriptionSize"
+            android:layout_weight="2"/>
+        <LinearLayout
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+            <ImageButton
+                android:layout_width="@dimen/heartHeight"
+                android:layout_height="@dimen/heartHeight"
+                android:id="@+id/commentHeart"
+                android:onClick="onCommentHeart"
+                android:background="@null"
+                android:layout_gravity="top"/>
+            <TextView
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:id="@+id/numCommentHearts"
+                android:textSize="@dimen/numHearts"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
