@@ -31,7 +31,7 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
 public class RestClient {
-    private string backendUrl = "http://gnossen.com:8765";
+    private String backendUrl = "http://gnossen.com:8765";
     public Thread getThread(String postID) {
         try {
             HttpClient client = new DefaultHttpClient();
