@@ -11,43 +11,51 @@
         android:padding="4dp">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="450dp"
+            android:layout_height="425dp"
             android:orientation="vertical"
             android:padding="8dp"
             android:background="@android:drawable/dialog_holo_light_frame"
             android:id="@+id/beaconContainer">
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="371dp"
+                android:layout_height="346dp"
                 android:id="@+id/threadImage"
                 android:background="@color/gunmetal"
                 android:adjustViewBounds="true"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/threadUser"
-                android:background="@color/container_white"
-                android:paddingLeft="8dp"
-                android:textStyle="bold" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:background="@color/container_white">
 
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/threadDesc"
-                    android:textSize="@dimen/descriptionSize"
-                    android:layout_weight="2"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
                     android:background="@color/container_white"
-                    android:paddingLeft="8dp"/>
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/threadUser"
+                        android:background="@color/container_white"
+                        android:paddingLeft="12dp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center_vertical"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/threadDesc"
+                        android:textSize="@dimen/descriptionSize"
+                        android:background="@color/container_white"
+                        android:paddingLeft="12dp"/>
+                </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:background="@color/container_white">
                     <ImageButton
@@ -57,15 +65,15 @@
                         android:onClick="onThreadHeart"
                         android:background="@null"
                         android:layout_gravity="center"
-                        android:src="@drawable/heart_outline"
-                        android:tint="@color/heart_red"/>
+                        android:src="@drawable/filled_heart"
+                        android:tint="@color/heart_gray"/>
                     <TextView
                         android:layout_width="30dp"
-                        android:layout_height="12dp"
+                        android:layout_height="wrap_content"
                         android:id="@+id/numThreadHearts"
                         android:textSize="@dimen/numHearts"
                         android:layout_gravity="center"
-                        android:background="@color/container_white"/>
+                        android:background="@color/container_white" />
                 </LinearLayout>
 
             </LinearLayout>

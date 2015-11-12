@@ -60,7 +60,7 @@ public class ThreadView extends Activity {
         int position = (int) heart.getTag();
         Thread.Comment[] comments = activeThread.getComments();
         Thread.Comment heartedComment = comments[position];
-        heart.setImageResource(R.drawable.filled_heart);
+        heart.setColorFilter(Color.rgb(255,106,106));
         heartedComment.setHearts(1 + heartedComment.getHearts());
         TextView hearts = (TextView) findViewById(R.id.numCommentHearts);
         hearts.setText(Integer.toString(heartedComment.getHearts()));
@@ -70,7 +70,7 @@ public class ThreadView extends Activity {
 
     public void onThreadHeart (View view) {
         ImageButton heart = (ImageButton) view;
-        heart.setImageResource(R.drawable.filled_heart);
+        heart.setColorFilter(Color.rgb(255, 106, 106));
         activeThread.setHearts(1 + activeThread.getHearts());
         TextView hearts = (TextView) findViewById(R.id.numThreadHearts);
         hearts.setText(Integer.toString(activeThread.getHearts()));

@@ -6,5 +6,5 @@
     <dimen name="descriptionSize">12sp</dimen>
     <dimen name="heartWidth">40dp</dimen>
     <dimen name="heartHeight">30dp</dimen>
-    <dimen name="numHearts">10sp</dimen>
+    <dimen name="numHearts">14sp</dimen>
 </resources>
