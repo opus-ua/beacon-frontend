@@ -12,6 +12,10 @@ def getGitRevision = "git rev-parse --short HEAD".execute().text.trim()
 
 android {
 
+    lintOptions {
+        abortOnError false
+    }
+
     useLibrary 'org.apache.http.legacy'
 
     applicationVariants.all { variant ->
@@ -91,8 +95,6 @@ repositories {
     maven {
         url 'http://repo.spring.io/milestone'
     }
-
-
 }
 
 

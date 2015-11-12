@@ -35,20 +35,4 @@ public class ApplicationTest {
         String expectedButtonText = mainActivity.getString(R.string.label_launch_next); 
         assertEquals(expectedButtonText, button.getText().toString());
     }
-
-    @Test
-    public void testLaunchedWithIntent() throws Exception {
-        Activity mainActivity = Robolectric.setupActivity(LaunchActivity.class);
-        Button button = (Button) mainActivity.findViewById(R.id.launch_next_activity_button);
-
-        ShadowActivity shadowActivity = Shadows.shadowOf(mainActivity);
-        button.performClick();
-        
-        Intent startedIntent = shadowActivity.getNextStartedActivity();        
-        assertNotNull(startedIntent);
-        assertTrue(shadowActivity.isFinishing());
-
-        String payload = startedIntent.getStringExtra(NextActivity.EXTRAS_PAYLOAD_KEY);
-        assertEquals(LaunchActivity.STRING_PAYLOAD, payload);
-    }
 }
