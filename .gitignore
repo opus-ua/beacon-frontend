@@ -20,3 +20,5 @@ hs_err_pid*
 /captures
 
 *.iml
+release.properties
+release.keystore
