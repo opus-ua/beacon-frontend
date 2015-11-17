@@ -20,5 +20,7 @@ hs_err_pid*
 /captures
 
 *.iml
-release.properties
+beacon.properties
 release.keystore
+
+app/google-services.json

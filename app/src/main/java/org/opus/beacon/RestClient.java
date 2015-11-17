@@ -31,8 +31,9 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
 public class RestClient {
-    private String backendUrl = "http://gnossen.com:8765";
+    private String backendUrl = BuildConfig.SERVER_URL;
     public Thread getThread(String postID) {
+        Log.d("RestClient", "Server URL: '" + backendUrl + "'");
         try {
             HttpClient client = new DefaultHttpClient();
             String getURL = backendUrl + "/beacon/"+postID;

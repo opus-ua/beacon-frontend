@@ -11,6 +11,7 @@
 
     <string name="launch_next">Launch Activity</string>
     <string name="next_activity">Next Activity</string>
+    <string name="authentication_activity">Authentication Activity</string>
 
     <string name="sender_activity">Sender Activity</string>
     <string name="receiver_activity">Receiver Activity</string>
@@ -22,4 +23,7 @@
     <string name="heart_success">Hearted</string>
     <string name="heart_failure">Error Hearting</string>
     <string name="server_error">Server Error</string>
+
+    <string name="preference_file_key">org.opus.beacon.preferences</string>
+    <string name="preference_authenticated">user_authenticated</string>
 </resources>
