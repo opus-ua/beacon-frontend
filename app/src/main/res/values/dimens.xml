@@ -7,4 +7,9 @@
     <dimen name="heartWidth">40dp</dimen>
     <dimen name="heartHeight">30dp</dimen>
     <dimen name="numHearts">14sp</dimen>
+    <dimen name="listViewPadding">8dp</dimen>
+    <dimen name="dividingLine">2dp</dimen>
+    <dimen name="commentHeight">75dp</dimen>
+    <dimen name="textIndent">12dp</dimen>
+    <dimen name="heartCountWidth">30dp</dimen>
 </resources>

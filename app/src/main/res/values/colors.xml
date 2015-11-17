@@ -5,4 +5,5 @@
     <item name="heart_red" type="color">#FF6A6A</item>
     <item name="heart_gray" type="color">#C0C0C0</item>
     <item name="gunmetal" type="color">#2C3539</item>
+    <item name="gray" type="color">#808080</item>
 </resources>

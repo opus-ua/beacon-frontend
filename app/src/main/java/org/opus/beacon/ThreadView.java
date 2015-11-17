@@ -72,7 +72,7 @@ public class ThreadView extends Activity {
         ImageButton heart = (ImageButton) view;
         heart.setColorFilter(Color.rgb(255, 106, 106));
         activeThread.setHearts(1 + activeThread.getHearts());
-        TextView hearts = (TextView) findViewById(R.id.numThreadHearts);
+        TextView hearts = (TextView) findViewById(R.id.numHeaderHearts);
         hearts.setText(Integer.toString(activeThread.getHearts()));
         heart.setEnabled(false);
         new heartPost().execute(Integer.toString(activeThread.getId()));
@@ -86,23 +86,20 @@ public class ThreadView extends Activity {
 
         @Override
         protected void onPostExecute(Thread s) {
-            ImageView contentValue = (ImageView) findViewById(R.id.threadImage);
-            TextView threadDesc = (TextView) findViewById(R.id.threadDesc);
-            TextView threadUser = (TextView) findViewById(R.id.threadUser);
-            TextView numHearts = (TextView) findViewById(R.id.numThreadHearts);
-            LinearLayout beaconContainer = (LinearLayout) findViewById(R.id.beaconContainer);
             Bitmap threadImage = s.getImage();
-            float aspect = (float)threadImage.getHeight() / (float)threadImage.getWidth();
-            float newHeight = beaconContainer.getWidth()*aspect;
-            if (threadImage != null) {
-                contentValue.setImageBitmap(threadImage);
-            }
-            threadDesc.setText(s.getText());
-            threadUser.setText(Integer.toString(s.getUser()));
-            numHearts.setText(Integer.toString(s.getHearts()));
             activeThread = s;
             CommentAdapter adapter = new CommentAdapter(context, activeThread.getComments());
             ListView comments = (ListView) findViewById(R.id.commentListView);
+            View header = (View)getLayoutInflater().inflate(R.layout.header, null);
+            ImageView threadImageView = (ImageView) header.findViewById(R.id.headerImage);
+            TextView threadDesc = (TextView) header.findViewById(R.id.headerDesc);
+            TextView threadUser = (TextView) header.findViewById(R.id.headerUser);
+            TextView numHearts = (TextView) header.findViewById(R.id.numHeaderHearts);
+            threadImageView.setImageBitmap(threadImage);
+            threadDesc.setText(s.getText());
+            threadUser.setText(Integer.toString(s.getUser()));
+            numHearts.setText(Integer.toString(s.getHearts()));
+            comments.addHeaderView(header);
             comments.setAdapter(adapter);
         }
     }

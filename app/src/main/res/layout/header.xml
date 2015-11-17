@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/headerImage"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY">
+    </ImageView>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/commentHeight"
-        android:orientation="horizontal"
-        android:background="@color/container_white">
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/commentHeight"
+    android:orientation="horizontal"
+    android:background="@color/container_white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,7 +28,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/commentUser"
+                android:id="@+id/headerUser"
                 android:background="@color/container_white"
                 android:paddingLeft="@dimen/textIndent"
                 android:textStyle="bold"
@@ -27,7 +36,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/commentText"
+                android:id="@+id/headerDesc"
                 android:textSize="@dimen/descriptionSize"
                 android:background="@color/container_white"
                 android:paddingLeft="@dimen/textIndent"/>
@@ -41,7 +50,7 @@
             <ImageButton
                 android:layout_width="@dimen/heartHeight"
                 android:layout_height="@dimen/heartHeight"
-                android:id="@+id/commentHeart"
+                android:id="@+id/headerHeart"
                 android:onClick="onThreadHeart"
                 android:background="@null"
                 android:layout_gravity="center"
@@ -50,12 +59,20 @@
             <TextView
                 android:layout_width="@dimen/heartCountWidth"
                 android:layout_height="wrap_content"
-                android:id="@+id/numCommentHearts"
+                android:id="@+id/numHeaderHearts"
                 android:textSize="@dimen/numHearts"
                 android:layout_gravity="center"
                 android:background="@color/container_white" />
         </LinearLayout>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dividingLine"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/gray">
     </LinearLayout>
 
 </LinearLayout>
