@@ -8,6 +8,8 @@ import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -25,9 +27,12 @@ public class AuthenticationActivity extends FragmentActivity implements
     private static GoogleApiClient mGoogleApiClient;
     private SharedPreferences mPreferences;
 
+    private EditText mTextEdit;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -43,6 +48,8 @@ public class AuthenticationActivity extends FragmentActivity implements
             .enableAutoManage(this, this)
             .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
             .build();
+
+        mTextEdit = (EditText)findViewById(R.id.username);
 
         if(authenticated()) {
             Log.d(TAG, "User already authenticated.");
@@ -73,14 +80,19 @@ public class AuthenticationActivity extends FragmentActivity implements
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             Log.d(TAG, "onActivityResult:GET_TOKEN:success:" + result.getStatus().isSuccess()); 
             if(result.isSuccess()) {
-                GoogleSignInAccount acct = result.getSignInAccount();
-                String idToken = acct.getIdToken();
-                Log.d(TAG, "idToken: " + idToken);
-                RestClient client = new RestClient();
-                int id = client.createAccount("testaccount", "SECRETZ", idToken);
-                Log.d(TAG, "Received user ID " + id);
-                setAuthenticated();
-                launchApp();
+                try {
+                    GoogleSignInAccount acct = result.getSignInAccount();
+                    String idToken = acct.getIdToken();
+                    Log.d(TAG, "idToken: " + idToken);
+                    RestClient client = new RestClient();
+                    int ident = client.createAccount(mTextEdit.getText().toString(), "SECRETZ", idToken);
+                    Log.d(TAG, "Received user ID " + ident);
+                    setAuthenticated();
+                    launchApp();
+                } catch (Exception e) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Sign-In failed.", Toast.LENGTH_SHORT);       
+                    toast.show();
+                }
             }
         }
     }

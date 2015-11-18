@@ -115,7 +115,8 @@ public class RestClient {
         }
     }
 
-    public int createAccount(String username, String secret, String token) {
+    public int createAccount(String username, String secret, String token) 
+        throws Exception {
         try {
             // String basicAuthStr = Base64Encoder.encode(username + ":" + secret);
             // post.setHeader("Authorization", "Basic " + basicAuthStr);
@@ -131,7 +132,7 @@ public class RestClient {
             int statusCode = response.getStatusLine().getStatusCode(); 
             
             if (statusCode != 200) {
-                return -1;
+                throw new Exception("Authentication was unsuccessful.");
             }
 
             String respJson = EntityUtils.toString(response.getEntity());
@@ -141,7 +142,7 @@ public class RestClient {
             return idResp.getId();
         } catch(Exception e) {
             Log.e("Create Account", "Failed to create account.", e);
-            return -1;
+            throw e;
         }
     } 
 

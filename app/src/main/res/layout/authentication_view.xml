@@ -11,6 +11,13 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
+        <EditText
+            android:id="@+id/username"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/username_input"
+            android:inputType="text" />
+
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
             android:layout_width="wrap_content"

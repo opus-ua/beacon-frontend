@@ -26,4 +26,5 @@
 
     <string name="preference_file_key">org.opus.beacon.preferences</string>
     <string name="preference_authenticated">user_authenticated</string>
+    <string name="username_input">username</string>
 </resources>

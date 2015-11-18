@@ -51,7 +51,6 @@ public class ThreadView extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        new GetActiveThread().execute();
     }
 
     public void onCommentHeart (View view)
