@@ -1,6 +1,5 @@
 package org.opus.beacon;
 
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -21,6 +20,7 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.apache.http.entity.ByteArrayEntity;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,13 +30,41 @@ import javax.mail.BodyPart;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
+
+
 public class RestClient {
+    private class CreateAccountRequest {
+        public CreateAccountRequest(String username, String secret, String token) {
+            setUsername(username);
+            setSecret(secret);
+            setToken(token);
+        } 
+
+        private String _username;
+        private String _secret;
+        private String _token;
+        public String getUsername() {return _username;}
+        public void setUsername(String u) {_username = u;}
+        public String getSecret() {return _secret;}
+        public void setSecret(String s) {_secret = s;}
+        public String getToken() {return _token;}
+        public void setToken(String t) {_token = t;}
+    }
+
+    private static class CreateAccountResponse {
+        public CreateAccountResponse() {}
+
+        private int _id;
+        public int getId() {return _id;}
+        public void setId(int id) {_id = id;}
+    }
+
     private String backendUrl = BuildConfig.SERVER_URL;
     public Thread getThread(String postID) {
         Log.d("RestClient", "Server URL: '" + backendUrl + "'");
         try {
             HttpClient client = new DefaultHttpClient();
-            String getURL = backendUrl + "/beacon/"+postID;
+            String getURL = URI("beacon", postID);
             HttpGet get = new HttpGet(getURL);
             HttpResponse response = client.execute(get);
             ByteArrayDataSource ds = new ByteArrayDataSource(response.getEntity().getContent(), "multipart/form-data");
@@ -62,15 +90,15 @@ public class RestClient {
         } catch (Exception e) {
             Log.e("Get Thread","Unable to connect to server");
         }
-        Thread fuckedUp = new Thread();
-        fuckedUp.setText("Something messed up");
-        return fuckedUp;
+        Thread err = new Thread();
+        err.setText("Something messed up");
+        return err;
     }
 
     public String heartPost(String postID,Context context) {
         try {
             HttpClient client = new DefaultHttpClient();
-            String postURL = backendUrl + "/heart/" + postID;
+            String postURL = URI("heart", postID);
             HttpPost post = new HttpPost(postURL);
             HttpResponse response = client.execute(post);
             int status = response.getStatusLine().getStatusCode();
@@ -85,6 +113,44 @@ public class RestClient {
             Log.e("Heart Post", "Server Error", e);
             return context.getResources().getString(R.string.server_error);
         }
+    }
+
+    public int createAccount(String username, String secret, String token) {
+        try {
+            // String basicAuthStr = Base64Encoder.encode(username + ":" + secret);
+            // post.setHeader("Authorization", "Basic " + basicAuthStr);
+            HttpClient client = new DefaultHttpClient();
+            String postURL = URI("createaccount");
+            HttpPost post = new HttpPost(postURL);
+            CreateAccountRequest jsonRequest = new CreateAccountRequest(username, secret, token);
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonStr = mapper.writeValueAsString(jsonRequest);
+            HttpEntity entity = new ByteArrayEntity(jsonStr.getBytes("UTF-8"));
+            post.setEntity(entity);
+            HttpResponse response = client.execute(post);
+            int statusCode = response.getStatusLine().getStatusCode(); 
+            
+            if (statusCode != 200) {
+                return -1;
+            }
+
+            String respJson = EntityUtils.toString(response.getEntity());
+            CreateAccountResponse idResp = mapper.readValue(respJson, CreateAccountResponse.class);
+            Log.d("Create Account", "Got user ID " + idResp.getId());
+
+            return idResp.getId();
+        } catch(Exception e) {
+            Log.e("Create Account", "Failed to create account.", e);
+            return -1;
+        }
+    } 
+
+    private String URI(String... elements) {
+        String uri = backendUrl;
+        for (int i = 0; i < elements.length; i++) {
+            uri += "/" + elements[i];
+        }
+        return uri;
     }
 }
 

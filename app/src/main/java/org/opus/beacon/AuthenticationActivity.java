@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +28,10 @@ public class AuthenticationActivity extends FragmentActivity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         mPreferences = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         setContentView(R.layout.authentication_view);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
@@ -66,16 +71,17 @@ public class AuthenticationActivity extends FragmentActivity implements
 
         if(requestCode == RC_GET_TOKEN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            Log.d(TAG, "onActivityResult:GET_TOKEN:success:" + result.getStatus().isSuccess());
-
+            Log.d(TAG, "onActivityResult:GET_TOKEN:success:" + result.getStatus().isSuccess()); 
             if(result.isSuccess()) {
                 GoogleSignInAccount acct = result.getSignInAccount();
                 String idToken = acct.getIdToken();
                 Log.d(TAG, "idToken: " + idToken);
+                RestClient client = new RestClient();
+                int id = client.createAccount("testaccount", "SECRETZ", idToken);
+                Log.d(TAG, "Received user ID " + id);
+                setAuthenticated();
+                launchApp();
             }
-
-            setAuthenticated();
-            launchApp();
         }
     }
 
