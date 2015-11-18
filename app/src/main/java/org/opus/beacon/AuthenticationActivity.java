@@ -61,9 +61,12 @@ public class AuthenticationActivity extends FragmentActivity implements
        return mPreferences.getBoolean(getString(R.string.preference_authenticated), false);
     }
 
-    private void setAuthenticated() {
+    private void setAuthenticated(String username, int id, String secret) {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putBoolean(getString(R.string.preference_authenticated), true);
+        editor.putString(getString(R.string.preference_username), username);
+        editor.putInt(getString(R.string.preference_user_id), id);
+        editor.putString(getString(R.string.preference_secret), secret);
         editor.commit();
     }
 
@@ -83,11 +86,9 @@ public class AuthenticationActivity extends FragmentActivity implements
                 try {
                     GoogleSignInAccount acct = result.getSignInAccount();
                     String idToken = acct.getIdToken();
-                    Log.d(TAG, "idToken: " + idToken);
                     RestClient client = new RestClient();
-                    int ident = client.createAccount(mTextEdit.getText().toString(), "SECRETZ", idToken);
-                    Log.d(TAG, "Received user ID " + ident);
-                    setAuthenticated();
+                    RestClient.CreateAccountResponse resp = client.createAccount(mTextEdit.getText().toString(), idToken);
+                    setAuthenticated(mTextEdit.getText().toString(), resp.getId(), resp.getSecret());
                     launchApp();
                 } catch (Exception e) {
                     Toast toast = Toast.makeText(getApplicationContext(), "Sign-In failed.", Toast.LENGTH_SHORT);       

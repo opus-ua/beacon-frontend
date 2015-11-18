@@ -34,29 +34,28 @@ import javax.mail.util.ByteArrayDataSource;
 
 public class RestClient {
     private class CreateAccountRequest {
-        public CreateAccountRequest(String username, String secret, String token) {
+        public CreateAccountRequest(String username, String token) {
             setUsername(username);
-            setSecret(secret);
             setToken(token);
         } 
 
         private String _username;
-        private String _secret;
         private String _token;
         public String getUsername() {return _username;}
         public void setUsername(String u) {_username = u;}
-        public String getSecret() {return _secret;}
-        public void setSecret(String s) {_secret = s;}
         public String getToken() {return _token;}
         public void setToken(String t) {_token = t;}
     }
 
-    private static class CreateAccountResponse {
+    public static class CreateAccountResponse {
         public CreateAccountResponse() {}
 
         private int _id;
+        private String _secret;
         public int getId() {return _id;}
         public void setId(int id) {_id = id;}
+        public String getSecret() {return _secret;}
+        public void setSecret(String secret) {_secret = secret;}
     }
 
     private String backendUrl = BuildConfig.SERVER_URL;
@@ -115,7 +114,7 @@ public class RestClient {
         }
     }
 
-    public int createAccount(String username, String secret, String token) 
+    public CreateAccountResponse createAccount(String username, String token)
         throws Exception {
         try {
             // String basicAuthStr = Base64Encoder.encode(username + ":" + secret);
@@ -123,7 +122,7 @@ public class RestClient {
             HttpClient client = new DefaultHttpClient();
             String postURL = URI("createaccount");
             HttpPost post = new HttpPost(postURL);
-            CreateAccountRequest jsonRequest = new CreateAccountRequest(username, secret, token);
+            CreateAccountRequest jsonRequest = new CreateAccountRequest(username, token);
             ObjectMapper mapper = new ObjectMapper();
             String jsonStr = mapper.writeValueAsString(jsonRequest);
             HttpEntity entity = new ByteArrayEntity(jsonStr.getBytes("UTF-8"));
@@ -136,10 +135,8 @@ public class RestClient {
             }
 
             String respJson = EntityUtils.toString(response.getEntity());
-            CreateAccountResponse idResp = mapper.readValue(respJson, CreateAccountResponse.class);
-            Log.d("Create Account", "Got user ID " + idResp.getId());
-
-            return idResp.getId();
+            CreateAccountResponse resp = mapper.readValue(respJson, CreateAccountResponse.class);
+            return resp;
         } catch(Exception e) {
             Log.e("Create Account", "Failed to create account.", e);
             throw e;
