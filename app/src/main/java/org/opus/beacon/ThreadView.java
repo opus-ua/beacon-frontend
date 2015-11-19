@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -48,26 +47,43 @@ public class ThreadView extends Activity {
 
     public void onCommentHeart (View view)
     {
-        ImageButton heart = (ImageButton) view;
-        int position = (int) heart.getTag();
-        Thread.Comment[] comments = activeThread.getComments();
-        Thread.Comment heartedComment = comments[position];
-        heart.setColorFilter(Color.rgb(255,106,106));
-        heartedComment.setHearts(1 + heartedComment.getHearts());
-        TextView hearts = (TextView) findViewById(R.id.numCommentHearts);
-        hearts.setText(Integer.toString(heartedComment.getHearts()));
-        heart.setEnabled(false);
-        new heartPost().execute(Integer.toString(heartedComment.getId()));
+        HeartButton heart = (HeartButton) view;
+        if (heart.isHearted()) {
+            heart.unheart();
+            int position = (int) heart.getTag();
+            Thread.Comment[] comments = activeThread.getComments();
+            Thread.Comment heartedComment = comments[position];
+            heartedComment.setHearts(heartedComment.getHearts() - 1);
+            TextView heartNumText = (TextView) findViewById(R.id.numCommentHearts);
+            heartNumText.setText(Integer.toString(heartedComment.getHearts()));
+            new heartPost().execute(Integer.toString(heartedComment.getId()), "unheart");
+        } else {
+            heart.heart();
+            int position = (int) heart.getTag();
+            Thread.Comment[] comments = activeThread.getComments();
+            Thread.Comment heartedComment = comments[position];
+            heartedComment.setHearts(heartedComment.getHearts() + 1);
+            TextView heartNumText = (TextView) findViewById(R.id.numCommentHearts);
+            heartNumText.setText(Integer.toString(heartedComment.getHearts()));
+            new heartPost().execute(Integer.toString(heartedComment.getId()), "heart");
+        }
     }
 
     public void onThreadHeart (View view) {
-        ImageButton heart = (ImageButton) view;
-        heart.setColorFilter(Color.rgb(255, 106, 106));
-        activeThread.setHearts(1 + activeThread.getHearts());
-        TextView hearts = (TextView) findViewById(R.id.numThreadHearts);
-        hearts.setText(Integer.toString(activeThread.getHearts()));
-        heart.setEnabled(false);
-        new heartPost().execute(Integer.toString(activeThread.getId()));
+        HeartButton heart = (HeartButton) view;
+        if (heart.isHearted()) {
+            heart.unheart();
+            activeThread.setHearts(activeThread.getHearts() - 1);
+            TextView heartNumText = (TextView) findViewById(R.id.numThreadHearts);
+            heartNumText.setText(Integer.toString(activeThread.getHearts()));
+            new heartPost().execute(Integer.toString(activeThread.getId()), "unheart");
+        } else {
+            heart.heart();
+            activeThread.setHearts(activeThread.getHearts() + 1);
+            TextView heartNumText = (TextView) findViewById(R.id.numThreadHearts);
+            heartNumText.setText(Integer.toString(activeThread.getHearts()));
+            new heartPost().execute(Integer.toString(activeThread.getId()), "heart");
+        }
     }
 
     private class GetActiveThread extends AsyncTask <Void, Void, Thread> {
@@ -125,7 +141,10 @@ public class ThreadView extends Activity {
         @Override
         protected RestException doInBackground(String... params){
             try {
-                client.heartPost(params[0]);
+                if (params[1] == "heart")
+                    client.heartPost(params[0]);
+                else
+                    client.unheartPost(params[0]);
                 return null;
             } catch (RestException e) {
                 return e;

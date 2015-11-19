@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <ImageButton
+            <org.opus.beacon.HeartButton
                 android:layout_width="@dimen/heartHeight"
                 android:layout_height="@dimen/heartHeight"
                 android:id="@+id/commentHeart"

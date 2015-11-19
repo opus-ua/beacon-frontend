@@ -26,6 +26,10 @@ public class BeaconRestClient extends RestClient {
         send(post(URI("heart", postID)));
     }
 
+    public void unheartPost(String postID) throws RestException {
+        send(post(URI("unheart", postID)));
+    }
+
     public JsonMsg.CreateAccountResponse createAccount(String username, String token) throws RestException {
         RestRequest req = post(URI("createaccount"));
         req.writeJson(new JsonMsg.CreateAccountRequest(username, token));
