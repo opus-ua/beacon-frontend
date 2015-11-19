@@ -5,10 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 
 import android.view.View;
 import android.widget.ImageButton;
@@ -18,24 +16,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.client.RestTemplate;
-
 
 public class ThreadView extends Activity {
 
     private Thread activeThread;
     private String postID;
-    private User user;
     private Context context;
-    private RestClient backend;
+    private BeaconRestClient client;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +31,12 @@ public class ThreadView extends Activity {
         int beaconID = activityThatCalled.getExtras().getInt("beaconID");
         postID = Integer.toString(beaconID);
         context = this;
-        backend = new RestClient();
+        try {
+            Auth auth = new Auth(context);
+            client = new BeaconRestClient(auth.getId(), auth.getSecret());
+        } catch(Exception e) {
+            return;
+        }
         new GetActiveThread().execute();
     }
 
@@ -80,7 +72,15 @@ public class ThreadView extends Activity {
     private class GetActiveThread extends AsyncTask <Void, Void, Thread> {
         @Override
         protected Thread doInBackground(Void... params) {
-            return backend.getThread(postID);
+            try {
+                return client.getThread(postID);
+            } catch(RestException e) {
+                if (e.shouldInformUser()) {
+                    Toast toast = Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                return new Thread();
+            }
         }
 
         @Override
@@ -106,19 +106,22 @@ public class ThreadView extends Activity {
         }
     }
 
-    private class heartPost extends AsyncTask <String,Void,String> {
+    private class heartPost extends AsyncTask <String,Void,RestException> {
         @Override
-        protected String doInBackground(String... params){
-            String result = backend.heartPost(params[0],context);
-            return result;
+        protected RestException doInBackground(String... params){
+            try {
+                client.heartPost(params[0]);
+                return null;
+            } catch (RestException e) {
+                return e;
+            }
         }
         @Override
-        protected void onPostExecute(String result) {
-            Toast toast = Toast.makeText(context, result, Toast.LENGTH_SHORT);
-            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
-            v.setTextColor(Color.WHITE);
-            v.setBackgroundColor(0x00000000);
-            toast.show();
+        protected void onPostExecute(RestException err) {
+            if(err != null && err.shouldInformUser()) {
+                Toast toast = Toast.makeText(context, err.getMessage(), Toast.LENGTH_SHORT);
+                toast.show();
+            }
         }
     }
 }

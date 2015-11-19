@@ -33,7 +33,6 @@ public class AuthenticationActivity extends FragmentActivity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -86,8 +85,8 @@ public class AuthenticationActivity extends FragmentActivity implements
                 try {
                     GoogleSignInAccount acct = result.getSignInAccount();
                     String idToken = acct.getIdToken();
-                    RestClient client = new RestClient();
-                    RestClient.CreateAccountResponse resp = client.createAccount(mTextEdit.getText().toString(), idToken);
+                    BeaconRestClient client = new BeaconRestClient();
+                    JsonMsg.CreateAccountResponse resp = client.createAccount(mTextEdit.getText().toString(), idToken);
                     setAuthenticated(mTextEdit.getText().toString(), resp.getId(), resp.getSecret());
                     launchApp();
                 } catch (Exception e) {
