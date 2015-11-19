@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +23,9 @@ public class ThreadView extends Activity {
     private String postID;
     private Context context;
     private BeaconRestClient client;
+    private CommentAdapter mAdapter;
+    private static final String TAG = "ThreadView";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,42 +52,45 @@ public class ThreadView extends Activity {
     public void onCommentHeart (View view)
     {
         HeartButton heart = (HeartButton) view;
+        int position = (int) heart.getTag();
+        Thread.Comment[] comments = activeThread.getComments();
+        Thread.Comment heartedComment = comments[position];
+        int numHearts = heartedComment.getHearts();
+        String action;
         if (heart.isHearted()) {
             heart.unheart();
-            int position = (int) heart.getTag();
-            Thread.Comment[] comments = activeThread.getComments();
-            Thread.Comment heartedComment = comments[position];
-            heartedComment.setHearts(heartedComment.getHearts() - 1);
-            TextView heartNumText = (TextView) findViewById(R.id.numCommentHearts);
-            heartNumText.setText(Integer.toString(heartedComment.getHearts()));
-            new heartPost().execute(Integer.toString(heartedComment.getId()), "unheart");
+            heartedComment.setHearted(false);
+            numHearts--;
+            action = "unheart";
         } else {
             heart.heart();
-            int position = (int) heart.getTag();
-            Thread.Comment[] comments = activeThread.getComments();
-            Thread.Comment heartedComment = comments[position];
-            heartedComment.setHearts(heartedComment.getHearts() + 1);
-            TextView heartNumText = (TextView) findViewById(R.id.numCommentHearts);
-            heartNumText.setText(Integer.toString(heartedComment.getHearts()));
-            new heartPost().execute(Integer.toString(heartedComment.getId()), "heart");
+            heartedComment.setHearted(true);
+            numHearts++;
+            action = "heart";
         }
+        heartedComment.setHearts(numHearts);
+        new heartPost().execute(Integer.toString(heartedComment.getId()), action);
+        mAdapter.notifyDataSetChanged();
     }
 
     public void onThreadHeart (View view) {
         HeartButton heart = (HeartButton) view;
+        int numHearts = activeThread.getHearts();
+        String action;
         if (heart.isHearted()) {
             heart.unheart();
-            activeThread.setHearts(activeThread.getHearts() - 1);
-            TextView heartNumText = (TextView) findViewById(R.id.numThreadHearts);
-            heartNumText.setText(Integer.toString(activeThread.getHearts()));
-            new heartPost().execute(Integer.toString(activeThread.getId()), "unheart");
+            numHearts--;
+            action = "unheart";
         } else {
             heart.heart();
-            activeThread.setHearts(activeThread.getHearts() + 1);
-            TextView heartNumText = (TextView) findViewById(R.id.numThreadHearts);
-            heartNumText.setText(Integer.toString(activeThread.getHearts()));
-            new heartPost().execute(Integer.toString(activeThread.getId()), "heart");
+            numHearts++;
+            action = "heart";
         }
+        activeThread.setHearts(numHearts);
+        TextView heartNumText = (TextView) findViewById(R.id.numThreadHearts);
+        heartNumText.setText(Integer.toString(activeThread.getHearts()));
+        new heartPost().execute(Integer.toString(activeThread.getId()), action);
+        mAdapter.notifyDataSetChanged();
     }
 
     private class GetActiveThread extends AsyncTask <Void, Void, Thread> {
@@ -130,9 +137,9 @@ public class ThreadView extends Activity {
                 threadUser.setText(s.getUsername());
                 numHearts.setText(Integer.toString(s.getHearts()));
                 activeThread = s;
-                CommentAdapter adapter = new CommentAdapter(context, activeThread.getComments());
+                mAdapter = new CommentAdapter(context, activeThread.getComments());
                 ListView comments = (ListView) findViewById(R.id.commentListView);
-                comments.setAdapter(adapter);
+                comments.setAdapter(mAdapter);
             }
         }
     }

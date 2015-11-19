@@ -76,6 +76,7 @@ public class Thread {
         private String text;
         private String time;
         private String username;
+        private boolean hearted;
 
         public int getId() { return id; }
         public void setId(int id) { this.id = id; }
@@ -97,5 +98,7 @@ public class Thread {
         public void setTime(String time) { this.time = time; }
         public String getUsername() { return username; }
         public void setUsername(String username) { this.username = username;}
+        public boolean getHearted() { return hearted; }
+        public void setHearted(boolean hearted) { this.hearted = hearted;}
     }
 }

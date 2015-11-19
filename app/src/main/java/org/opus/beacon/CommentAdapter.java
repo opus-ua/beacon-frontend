@@ -25,6 +25,9 @@ public class CommentAdapter extends ArrayAdapter<Thread.Comment> {
         TextView numberHearts = (TextView) theView.findViewById(R.id.numCommentHearts);
         HeartButton heart = (HeartButton) theView.findViewById(R.id.commentHeart);
 
+        if (comment.getHearted())
+            heart.heart();
+
         commentText.setText(comment.getText());
         commentUser.setText(comment.getUsername());
         numberHearts.setText(Integer.toString(comment.getHearts()));
