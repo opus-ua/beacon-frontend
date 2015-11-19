@@ -100,6 +100,15 @@ public class ThreadView extends Activity {
             try {
                 Thread t = client.getThread(postID);
                 loaded = true;
+                if (t.getHearted()) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            HeartButton threadHeart = (HeartButton) findViewById(R.id.threadHeart);
+                            threadHeart.heart();
+                        }
+                    });
+                }
                 return t;
             } catch(final RestException e) {
                 if (e.shouldInformUser()) {

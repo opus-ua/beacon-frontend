@@ -18,6 +18,7 @@ public class Thread {
     private double latitude;
     private Bitmap image;
     private Comment[] comments;
+    private boolean hearted;
 
     public Thread() {
     }
@@ -68,6 +69,8 @@ public class Thread {
     public void setImage(Bitmap image) { this.image = image; }
     public Comment[] getComments() { return comments; }
     public void setComments(Comment[] comments) { this.comments = comments; }
+    public boolean getHearted() { return hearted; }
+    public void setHearted(boolean hearted) { this.hearted = hearted;}
 
     public static class Comment {
         private int id;

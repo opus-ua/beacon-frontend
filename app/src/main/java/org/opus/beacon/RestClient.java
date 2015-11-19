@@ -41,8 +41,9 @@ public class RestClient {
     protected RestResponse get(String url) throws RestException {
         try {
             HttpClient client = new DefaultHttpClient();
-            HttpGet req = new HttpGet(url);
-            HttpResponse rawResp = client.execute(req);
+            RestRequest req = new RestRequest(new HttpGet(url));
+            addAuth(req);
+            HttpResponse rawResp = client.execute(req.getRawReq());
             RestResponse resp = new RestResponse(rawResp);
             processErrorMsg(resp);
             return resp;
