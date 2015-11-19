@@ -11,6 +11,40 @@ Beacon was started as a university project and as such, is not currently open
 for pull requests. In January 2016, however, Beacon will become open for
 contributions.
 
+## Configuring the Frontend
+In order to build the frontend, you need to configure several values. The first
+is the URL of the backend. Create a file at the project root named
+```beacon.properties``` and add the following line
+
+```groovy
+ServerURL=SERVER_URL
+```
+
+And replace the string ```SERVER_URL``` with your actual URL. Next, you'll need
+a server client ID from Google in order to authenticate with the Google sign-in
+API.
+
+Add the following line to ```beacon.properties```.
+
+```groovy
+ServerClientID=ID_STRING
+```
+
+And replace the string ```ID_STRING``` with your personal ID. It should end in
+```apps.googleusercontent.com```. You can find directions for obtaining such an
+ID
+[here](https://developers.google.com/identity/sign-in/android/start-integrating).
+
+## Authenticating with Google Sign-In
+
+Creating a configuration file at ```app/google-services.json``` is necessary for
+authenticating with Google's Sign-In api and, therefore for the app itself.
+Follow the directions
+[here](https://developers.google.com/identity/sign-in/android/start-integrating) to get
+a configuration file of your own. We have experienced trouble with the Google
+Services libraries and emulators, so it is recommended that you develop using a
+physical device.
+
 ## Signing the Frontend
 
 You don't need to set up a keystore in order to create a debug build, but in
@@ -18,8 +52,7 @@ order to take advantage of authentication services like Facebook and Google, the
 key of the apk must match the key registered with Facebook or Google.
 
 In order to build a signed release apk, there are several steps you must take
-after cloning the repository. Start by creating a properties file at the project
-root named ```release.properties``` and filling it with the following.
+after cloning the repository. Add the following lines to ```beacon.properties```.
 
 ```groovy
 keyStore=release.keystore
