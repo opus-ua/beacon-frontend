@@ -35,6 +35,7 @@ public class ThreadView extends Activity {
             Auth auth = new Auth(context);
             client = new BeaconRestClient(auth.getId(), auth.getSecret());
         } catch(Exception e) {
+            finish();
             return;
         }
         new GetActiveThread().execute();
@@ -70,14 +71,26 @@ public class ThreadView extends Activity {
     }
 
     private class GetActiveThread extends AsyncTask <Void, Void, Thread> {
+        private boolean loaded = false;
         @Override
         protected Thread doInBackground(Void... params) {
             try {
-                return client.getThread(postID);
-            } catch(RestException e) {
+                Thread t = client.getThread(postID);
+                loaded = true;
+                return t;
+            } catch(final RestException e) {
                 if (e.shouldInformUser()) {
-                    Toast toast = Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT);
-                    toast.show();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast toast = Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT);
+                            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+                            v.setTextColor(Color.WHITE);
+                            v.setBackgroundColor(0x00000000);
+                            toast.show();
+                        }
+                    });
+                    finish();
                 }
                 return new Thread();
             }
@@ -85,24 +98,26 @@ public class ThreadView extends Activity {
 
         @Override
         protected void onPostExecute(Thread s) {
-            ImageView contentValue = (ImageView) findViewById(R.id.threadImage);
-            TextView threadDesc = (TextView) findViewById(R.id.threadDesc);
-            TextView threadUser = (TextView) findViewById(R.id.threadUser);
-            TextView numHearts = (TextView) findViewById(R.id.numThreadHearts);
-            LinearLayout beaconContainer = (LinearLayout) findViewById(R.id.beaconContainer);
-            Bitmap threadImage = s.getImage();
-            float aspect = (float)threadImage.getHeight() / (float)threadImage.getWidth();
-            float newHeight = beaconContainer.getWidth()*aspect;
-            if (threadImage != null) {
-                contentValue.setImageBitmap(threadImage);
+            if (loaded) {
+                ImageView contentValue = (ImageView) findViewById(R.id.threadImage);
+                TextView threadDesc = (TextView) findViewById(R.id.threadDesc);
+                TextView threadUser = (TextView) findViewById(R.id.threadUser);
+                TextView numHearts = (TextView) findViewById(R.id.numThreadHearts);
+                LinearLayout beaconContainer = (LinearLayout) findViewById(R.id.beaconContainer);
+                Bitmap threadImage = s.getImage();
+                float aspect = (float) threadImage.getHeight() / (float) threadImage.getWidth();
+                float newHeight = beaconContainer.getWidth() * aspect;
+                if (threadImage != null) {
+                    contentValue.setImageBitmap(threadImage);
+                }
+                threadDesc.setText(s.getText());
+                threadUser.setText(s.getUsername());
+                numHearts.setText(Integer.toString(s.getHearts()));
+                activeThread = s;
+                CommentAdapter adapter = new CommentAdapter(context, activeThread.getComments());
+                ListView comments = (ListView) findViewById(R.id.commentListView);
+                comments.setAdapter(adapter);
             }
-            threadDesc.setText(s.getText());
-            threadUser.setText(Integer.toString(s.getUser()));
-            numHearts.setText(Integer.toString(s.getHearts()));
-            activeThread = s;
-            CommentAdapter adapter = new CommentAdapter(context, activeThread.getComments());
-            ListView comments = (ListView) findViewById(R.id.commentListView);
-            comments.setAdapter(adapter);
         }
     }
 

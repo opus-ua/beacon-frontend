@@ -26,7 +26,7 @@ public class CommentAdapter extends ArrayAdapter<Thread.Comment> {
         ImageButton heart = (ImageButton) theView.findViewById(R.id.commentHeart);
 
         commentText.setText(comment.getText());
-        commentUser.setText(Integer.toString(comment.getUser()));
+        commentUser.setText(comment.getUsername());
         numberHearts.setText(Integer.toString(comment.getHearts()));
         heart.setImageResource(R.drawable.filled_heart);
         heart.setTag(position);
