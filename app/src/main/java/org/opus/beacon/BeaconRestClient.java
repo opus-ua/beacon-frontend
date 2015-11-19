@@ -22,9 +22,8 @@ public class BeaconRestClient extends RestClient {
         return thread;
     }
 
-    public String heartPost(String postID) throws RestException {
+    public void heartPost(String postID) throws RestException {
         send(post(URI("heart", postID)));
-        return "";
     }
 
     public JsonMsg.CreateAccountResponse createAccount(String username, String token) throws RestException {
