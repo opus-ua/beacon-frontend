@@ -93,6 +93,9 @@ public class AuthenticationActivity extends FragmentActivity implements
                     Toast toast = Toast.makeText(getApplicationContext(), "Sign-In failed.", Toast.LENGTH_SHORT);       
                     toast.show();
                 }
+            } else {
+                Toast toast = Toast.makeText(getApplicationContext(), "Could not authenticate with Google.", Toast.LENGTH_SHORT);
+                toast.show();
             }
         }
     }
