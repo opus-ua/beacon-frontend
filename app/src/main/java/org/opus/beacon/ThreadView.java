@@ -87,7 +87,7 @@ public class ThreadView extends Activity {
             action = "heart";
         }
         activeThread.setHearts(numHearts);
-        TextView heartNumText = (TextView) findViewById(R.id.numThreadHearts);
+        TextView heartNumText = (TextView) findViewById(R.id.numHeaderHearts);
         heartNumText.setText(Integer.toString(activeThread.getHearts()));
         new heartPost().execute(Integer.toString(activeThread.getId()), action);
         mAdapter.notifyDataSetChanged();
@@ -100,15 +100,6 @@ public class ThreadView extends Activity {
             try {
                 Thread t = client.getThread(postID);
                 loaded = true;
-                if (t.getHearted()) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            HeartButton threadHeart = (HeartButton) findViewById(R.id.threadHeart);
-                            threadHeart.heart();
-                        }
-                    });
-                }
                 return t;
             } catch(final RestException e) {
                 if (e.shouldInformUser()) {
@@ -129,26 +120,25 @@ public class ThreadView extends Activity {
         }
 
         @Override
-        protected void onPostExecute(Thread s) {
-            if (loaded) {
-                ImageView contentValue = (ImageView) findViewById(R.id.threadImage);
-                TextView threadDesc = (TextView) findViewById(R.id.threadDesc);
-                TextView threadUser = (TextView) findViewById(R.id.threadUser);
-                TextView numHearts = (TextView) findViewById(R.id.numThreadHearts);
-                LinearLayout beaconContainer = (LinearLayout) findViewById(R.id.beaconContainer);
-                Bitmap threadImage = s.getImage();
-                float aspect = (float) threadImage.getHeight() / (float) threadImage.getWidth();
-                float newHeight = beaconContainer.getWidth() * aspect;
-                if (threadImage != null) {
-                    contentValue.setImageBitmap(threadImage);
-                }
-                threadDesc.setText(s.getText());
-                threadUser.setText(s.getUsername());
-                numHearts.setText(Integer.toString(s.getHearts()));
-                activeThread = s;
-                mAdapter = new CommentAdapter(context, activeThread.getComments());
-                ListView comments = (ListView) findViewById(R.id.commentListView);
-                comments.setAdapter(mAdapter);
+        protected void onPostExecute(Thread thread) {
+            Bitmap threadImage = thread.getImage();
+            activeThread = thread;
+            mAdapter = new CommentAdapter(context, activeThread.getComments());
+            ListView comments = (ListView) findViewById(R.id.commentListView);
+            View header = (View)getLayoutInflater().inflate(R.layout.header, null);
+            ImageView threadImageView = (ImageView) header.findViewById(R.id.headerImage);
+            TextView threadDesc = (TextView) header.findViewById(R.id.headerDesc);
+            TextView threadUser = (TextView) header.findViewById(R.id.headerUser);
+            TextView numHearts = (TextView) header.findViewById(R.id.numHeaderHearts);
+            threadImageView.setImageBitmap(threadImage);
+            threadDesc.setText(thread.getText());
+            threadUser.setText(thread.getUsername());
+            numHearts.setText(Integer.toString(thread.getHearts()));
+            comments.addHeaderView(header);
+            comments.setAdapter(mAdapter);
+            if (thread.getHearted()) {
+                HeartButton threadHeart = (HeartButton) findViewById(R.id.headerHeart);
+                threadHeart.heart();
             }
         }
     }

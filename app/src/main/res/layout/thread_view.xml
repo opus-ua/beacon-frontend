@@ -2,91 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="4dp">
+    android:layout_height="match_parent">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="4dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="425dp"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:background="@android:drawable/dialog_holo_light_frame"
-            android:id="@+id/beaconContainer">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="346dp"
-                android:id="@+id/threadImage"
-                android:background="@color/gunmetal"
-                android:adjustViewBounds="true"/>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:background="@color/container_white">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:background="@color/container_white"
-                    android:layout_weight="1">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/threadUser"
-                        android:background="@color/container_white"
-                        android:paddingLeft="12dp"
-                        android:textStyle="bold"
-                        android:layout_gravity="center_vertical"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/threadDesc"
-                        android:textSize="@dimen/descriptionSize"
-                        android:background="@color/container_white"
-                        android:paddingLeft="12dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:background="@color/container_white">
-                    <org.opus.beacon.HeartButton
-                        android:layout_width="@dimen/heartHeight"
-                        android:layout_height="@dimen/heartHeight"
-                        android:id="@+id/threadHeart"
-                        android:onClick="onThreadHeart"
-                        android:background="@null"
-                        android:layout_gravity="center"
-                        android:src="@drawable/filled_heart"
-                        android:tint="@color/heart_gray"/>
-                    <TextView
-                        android:layout_width="30dp"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/numThreadHearts"
-                        android:textSize="@dimen/numHearts"
-                        android:layout_gravity="center"
-                        android:background="@color/container_white" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-
-
-        </LinearLayout>
+        android:paddingLeft="@dimen/listViewPadding"
+        android:paddingRight="@dimen/listViewPadding">
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@android:drawable/dialog_holo_light_frame"
             android:id="@+id/commentListView">
-
         </ListView>
     </LinearLayout>
 </LinearLayout>
