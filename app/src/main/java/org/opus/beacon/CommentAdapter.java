@@ -23,10 +23,13 @@ public class CommentAdapter extends ArrayAdapter<Thread.Comment> {
         TextView commentText = (TextView) theView.findViewById(R.id.commentText);
         TextView commentUser = (TextView) theView.findViewById(R.id.commentUser);
         TextView numberHearts = (TextView) theView.findViewById(R.id.numCommentHearts);
-        ImageButton heart = (ImageButton) theView.findViewById(R.id.commentHeart);
+        HeartButton heart = (HeartButton) theView.findViewById(R.id.commentHeart);
+
+        if (comment.getHearted())
+            heart.heart();
 
         commentText.setText(comment.getText());
-        commentUser.setText(Integer.toString(comment.getUser()));
+        commentUser.setText(comment.getUsername());
         numberHearts.setText(Integer.toString(comment.getHearts()));
         heart.setImageResource(R.drawable.filled_heart);
         heart.setTag(position);

@@ -47,7 +47,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:background="@color/container_white">
-            <ImageButton
+            <org.opus.beacon.HeartButton
                 android:layout_width="@dimen/heartHeight"
                 android:layout_height="@dimen/heartHeight"
                 android:id="@+id/headerHeart"

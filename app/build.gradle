@@ -1,4 +1,14 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+
+def beaconProps = new Properties()
+rootProject.file('beacon.properties').withInputStream {
+    stream -> beaconProps.load(stream)
+}
+
+for(p in beaconProps) {
+    project.ext[p.key] = p.value
+}
 
 def getVersionString = { ->
     if(rootProject.hasProperty('versionNumber')) {
@@ -44,6 +54,10 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
+    signingConfigs {
+        release
+    }
+
     defaultConfig {
         applicationId "org.opus.beacon"
         minSdkVersion 21
@@ -53,11 +67,22 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "SERVER_CLIENT_ID", "\"${ServerClientID}\""
+            buildConfigField "String", "SERVER_URL", "\"${ServerURL}\""
+        }
         release {
+            buildConfigField "String", "SERVER_CLIENT_ID", "\"${ServerClientID}\""
+            buildConfigField "String", "SERVER_URL", "\"${ServerURL}\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    if(rootProject.file("beacon.properties").exists()) {
+        buildTypes.release.signingConfig = signingConfigs.release
+    }
+
     packagingOptions {
         exclude 'META-INF/ASL2.0'
         exclude 'META-INF/LICENSE'
@@ -78,6 +103,7 @@ tasks.withType(Test) {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.google.android.gms:play-services-auth:8.3.0'
     compile 'com.android.support:appcompat-v7:23.0.0'
     compile 'org.springframework.android:spring-android-rest-template:2.0.0.M1'
     testCompile 'junit:junit:4.12'
@@ -97,4 +123,11 @@ repositories {
     }
 }
 
-
+if(rootProject.file("beacon.properties").exists()) {
+    def props = new Properties()
+    props.load(new FileInputStream(rootProject.file("beacon.properties")))
+    android.signingConfigs.release.storeFile rootProject.file(props.keyStore)
+    android.signingConfigs.release.storePassword props.keyStorePassword
+    android.signingConfigs.release.keyAlias props.keyAlias
+    android.signingConfigs.release.keyPassword props.keyAliasPassword
+}

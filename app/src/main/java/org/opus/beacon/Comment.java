@@ -33,8 +33,11 @@ public class Comment {
     private int user;
     private int hearts;
     private String time;
+    private boolean hearted;
 
 
+    public boolean getHearted() { return hearted; }
+    public void setHearted(boolean hearted) { this.hearted = hearted;}
     public void editComment(String newComment) {
         this.text = newComment;
     }

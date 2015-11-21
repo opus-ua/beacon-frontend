@@ -38,11 +38,11 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:background="@color/container_white">
-            <ImageButton
+            <org.opus.beacon.HeartButton
                 android:layout_width="@dimen/heartHeight"
                 android:layout_height="@dimen/heartHeight"
                 android:id="@+id/commentHeart"
-                android:onClick="onThreadHeart"
+                android:onClick="onCommentHeart"
                 android:background="@null"
                 android:layout_gravity="center"
                 android:src="@drawable/filled_heart"
