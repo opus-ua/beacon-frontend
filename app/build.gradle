@@ -72,8 +72,8 @@ android {
             buildConfigField "String", "SERVER_URL", "\"${ServerURL}\""
         }
         release {
-            buildConfigField "String", "SERVER_CLIENT_ID", "\"${properties.ServerClientID}\""
-            buildConfigField "String", "SERVER_URL", "\"${properties.ServerURL}\""
+            buildConfigField "String", "SERVER_CLIENT_ID", "\"${ServerClientID}\""
+            buildConfigField "String", "SERVER_URL", "\"${ServerURL}\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
