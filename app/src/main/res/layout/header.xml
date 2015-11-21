@@ -17,19 +17,17 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/commentHeight"
     android:orientation="horizontal"
-    android:background="@color/container_white">
+    android:background="@color/container_gray">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@color/container_white"
             android:layout_weight="1">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/headerUser"
-                android:background="@color/container_white"
                 android:paddingLeft="@dimen/textIndent"
                 android:textStyle="bold"
                 android:layout_gravity="center_vertical"/>
@@ -38,15 +36,13 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/headerDesc"
                 android:textSize="@dimen/descriptionSize"
-                android:background="@color/container_white"
                 android:paddingLeft="@dimen/textIndent"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:background="@color/container_white">
+            android:orientation="horizontal">
             <org.opus.beacon.HeartButton
                 android:layout_width="@dimen/heartHeight"
                 android:layout_height="@dimen/heartHeight"
@@ -61,18 +57,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/numHeaderHearts"
                 android:textSize="@dimen/numHearts"
-                android:layout_gravity="center"
-                android:background="@color/container_white" />
+                android:layout_gravity="center" />
         </LinearLayout>
-
     </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dividingLine"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/gray">
-    </LinearLayout>
-
 </LinearLayout>

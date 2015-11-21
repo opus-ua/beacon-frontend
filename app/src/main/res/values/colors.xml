@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="background_gray" type="color">#EEEEEE</item>
+    <item name="container_gray" type="color">#F0F0F0</item>
     <item name="container_white" type="color">#FFFFFF</item>
     <item name="heart_red" type="color">#FF6A6A</item>
     <item name="heart_gray" type="color">#C0C0C0</item>
