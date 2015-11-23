@@ -2,6 +2,8 @@ package org.opus.beacon;
 
 import android.graphics.Bitmap;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 
 
@@ -16,9 +18,11 @@ public class Thread {
     private String time;
     private double longitude;
     private double latitude;
-    private Bitmap image;
     private Comment[] comments;
     private boolean hearted;
+
+    @JsonIgnore
+    private Bitmap image;
 
     public Thread() {
     }
