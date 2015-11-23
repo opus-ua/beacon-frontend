@@ -21,7 +21,12 @@ public class RestException extends Exception {
 
     public static int ConnectionError = 30;
     public static int ProtocolError = 31;
-    public static int JsonError = 31;
+    public static int JsonError = 32;
+    public static int DatabaseError = 40;
+    public static int ServerError = 41;
+    public static int ExternalServiceError = 42;
+    public static int NoAccountFoundError = 50;
+    public static int UsernameExistsError = 51;
     public static int UnspecifiedError = 99;
 
     public RestException(int _errorCode, String msg) {

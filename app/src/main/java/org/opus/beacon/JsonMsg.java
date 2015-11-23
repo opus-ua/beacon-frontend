@@ -30,7 +30,11 @@ public class JsonMsg {
         public ErrorResp() {}
 
         private String _error;
+        private int _code;
+
         public String getError() {return _error;}
         public void setError(String error) {_error = error;}
+        public int getCode() { return _code; }
+        public void setCode(int code) {_code = code;}
     }
 }

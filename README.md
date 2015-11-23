@@ -28,6 +28,7 @@ Add the following line to ```beacon.properties```.
 
 ```groovy
 ServerClientID=ID_STRING
+DebugServerClientID=ID_STRING
 ```
 
 And replace the string ```ID_STRING``` with your personal ID. It should end in

@@ -77,7 +77,7 @@ public class RestClient {
         try {
             if (resp.getStatusCode() != 200) {
                 JsonMsg.ErrorResp err = resp.getJson(JsonMsg.ErrorResp.class);
-                throw new RestException(RestException.UnspecifiedError, err.getError());
+                throw new RestException(err.getCode(), err.getError());
             }
         } catch (RestException e) {
             throw e;

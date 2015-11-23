@@ -89,12 +89,22 @@ public class AuthenticationActivity extends FragmentActivity implements
                     JsonMsg.CreateAccountResponse resp = client.createAccount(mTextEdit.getText().toString(), idToken);
                     setAuthenticated(mTextEdit.getText().toString(), resp.getId(), resp.getSecret());
                     launchApp();
+                } catch (RestException e) {
+                   if (e.getCode() == RestException.UsernameExistsError) {
+                      Toast.makeText(getApplicationContext(), "Username already exists.", Toast.LENGTH_LONG).show();
+                   } else {
+                       Toast.makeText(getApplicationContext(), "Sign-In failed.", Toast.LENGTH_LONG).show();
+                   }
                 } catch (Exception e) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Sign-In failed.", Toast.LENGTH_SHORT);       
+                    Toast toast = Toast.makeText(getApplicationContext(), "Sign-In failed.", Toast.LENGTH_SHORT);
                     toast.show();
                 }
             } else {
-                Toast toast = Toast.makeText(getApplicationContext(), "Could not authenticate with Google.\n", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Could not authenticate with Google.\n" +
+                                result.getStatus().toString() + "\n" +
+                                BuildConfig.SERVER_CLIENT_ID,
+                        Toast.LENGTH_SHORT);
                 toast.show();
             }
         }
