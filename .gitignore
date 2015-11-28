@@ -22,5 +22,7 @@ hs_err_pid*
 *.iml
 beacon.properties
 release.keystore
+app/src/debug/res/values/google_maps_api.xml
+app/src/release/res/values/google_maps_api.xml
 
 app/google-services.json

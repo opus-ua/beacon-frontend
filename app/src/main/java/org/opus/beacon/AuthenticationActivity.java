@@ -111,7 +111,7 @@ public class AuthenticationActivity extends FragmentActivity implements
     }
 
     private void launchApp() {
-        Intent launchMain = new Intent(this, LaunchActivity.class);
+        Intent launchMain = new Intent(this, MapActivity.class);
         startActivity(launchMain);
         this.finish();
     }

@@ -30,4 +30,5 @@
     <string name="preference_user_id">user_id_value</string>
     <string name="preference_secret">secret_value</string>
     <string name="username_input">username</string>
+    <string name="title_activity_map">Map</string>
 </resources>

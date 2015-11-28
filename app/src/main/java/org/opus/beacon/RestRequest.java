@@ -6,6 +6,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.message.BasicHeader;
 
 import java.net.HttpRetryException;
 
@@ -28,6 +29,7 @@ public class RestRequest {
             String jsonStr = mapper.writeValueAsString(obj);
             HttpEntity entity = new ByteArrayEntity(jsonStr.getBytes("UTF-8"));
             request.setEntity(entity);
+            request.addHeader("Content-Type", "application/json");
         } catch (Exception e) {
             throw new RestException(RestException.JsonError, e.getMessage());
         }
