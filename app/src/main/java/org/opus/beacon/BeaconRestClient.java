@@ -1,6 +1,9 @@
 package org.opus.beacon;
 
 import android.graphics.Bitmap;
+import android.location.Location;
+
+import java.util.ArrayList;
 
 public class BeaconRestClient extends RestClient {
     public BeaconRestClient() {
@@ -28,6 +31,22 @@ public class BeaconRestClient extends RestClient {
 
     public void unheartPost(String postID) throws RestException {
         send(post(URI("unheart", postID)));
+    }
+
+    public ArrayList<BeaconThumb> getLocalBeacons(Location location) throws RestException {
+        JsonMsg.LocalBeaconRequest msg = new JsonMsg.LocalBeaconRequest((float) location.getLatitude(),
+                (float) location.getLongitude(),
+                1.0f);
+        RestRequest req = post(URI("local"));
+        req.writeJson(msg);
+        RestResponse resp = send(req);
+        JsonMsg.LocalBeaconResponse respJson = resp.getPartJson(JsonMsg.LocalBeaconResponse.class);
+        ArrayList<BeaconThumb> thumbs = new ArrayList<BeaconThumb>();
+        for (BeaconThumb thumb : respJson.getBeacons()) {
+            thumb.img = resp.getPartImage();
+            thumbs.add(thumb);
+        }
+        return thumbs;
     }
 
     public JsonMsg.CreateAccountResponse createAccount(String username, String token) throws RestException {

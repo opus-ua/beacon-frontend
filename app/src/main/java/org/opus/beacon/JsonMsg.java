@@ -1,5 +1,6 @@
 package org.opus.beacon;
 
+
 public class JsonMsg {
     public static class CreateAccountRequest {
         public CreateAccountRequest(String username, String token) {
@@ -26,6 +27,35 @@ public class JsonMsg {
         public void setSecret(String secret) {_secret = secret;}
     }
 
+    public static class LocalBeaconRequest {
+        public LocalBeaconRequest(float latitude, float longitude, float radius) {
+            _latitude = latitude;
+            _longitude = longitude;
+            _radius = radius;
+        }
+
+        private float _latitude;
+        private float _longitude;
+        private float _radius;
+
+        public float getLatitude() { return _latitude; }
+        public void setLatitude(float latitude) { _latitude = latitude; }
+        public float getLongitude() { return _longitude; }
+        public void setLongitude(float longitude) { _longitude = longitude; }
+        public float getRadius() { return _radius; }
+        public void setRadius(float radius) { _radius = radius; }
+    }
+
+
+
+    public static class LocalBeaconResponse {
+        public LocalBeaconResponse() {}
+
+        public BeaconThumb[] _beacons;
+        public BeaconThumb[] getBeacons() { return _beacons; }
+        public void setBeacons(BeaconThumb[] beacons) { _beacons = beacons; }
+    }
+
     public static class ErrorResp {
         public ErrorResp() {}
 
@@ -37,4 +67,5 @@ public class JsonMsg {
         public int getCode() { return _code; }
         public void setCode(int code) {_code = code;}
     }
+
 }

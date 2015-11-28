@@ -35,7 +35,7 @@ public class RestClient {
 
         String authValue = authId + ":" + authSecret;
         String basicAuthStr = Base64.encodeToString(authValue.getBytes(), Base64.DEFAULT);
-        req.setHeader("Authorization", "Basic " + basicAuthStr);
+        req.setHeader("Authorization", "Basic " + basicAuthStr.trim());
     }
 
     protected RestResponse get(String url) throws RestException {
