@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -31,7 +32,8 @@ import java.util.HashMap;
 public class MapActivity extends FragmentActivity
     implements LocationListener,
     ActivityCompat.OnRequestPermissionsResultCallback,
-    GoogleMap.OnMarkerClickListener {
+    GoogleMap.OnMarkerClickListener,
+    GoogleMap.OnCameraChangeListener {
 
     private GoogleMap mMap;
     private LocationManager mLocationManager;
@@ -87,6 +89,7 @@ public class MapActivity extends FragmentActivity
 
     private void setUpMap() {
         mMap.setOnMarkerClickListener(this);
+        mMap.setOnCameraChangeListener(this);
         mMap.getUiSettings().setRotateGesturesEnabled(false);
         mMap.getUiSettings().setTiltGesturesEnabled(false);
         mMap.getUiSettings().setCompassEnabled(false);
@@ -123,7 +126,7 @@ public class MapActivity extends FragmentActivity
 
     @Override
     public void onLocationChanged(Location location) {
-        if (location.getAccuracy() > 100.0f)
+        if (location.getAccuracy() > 150.0f)
             return;
 
         CameraPosition movement = new CameraPosition.Builder()
@@ -167,6 +170,74 @@ public class MapActivity extends FragmentActivity
         Intent launchThreadView = new Intent(this, ThreadView.class);
         launchThreadView.putExtra("beaconID", thumb.getId());
         startActivity(launchThreadView);
+        return false;
+    }
+
+    @Override
+    public void onCameraChange(CameraPosition position) {
+        mCurrentCamera = position;
+        mCameraHandler.removeCallbacks(mCameraCheckRunnable);
+        checkCameraAnimating();
+    }
+
+    public void onCameraAnimationEnd() {
+        float curZoom = mCurrentCamera.zoom;
+        LatLng location = mCurrentCamera.target;
+        float curTilt;
+
+        if (curZoom > MAX_ZOOM) {
+            curTilt = MAX_TILT;
+        } else if (curZoom < MIN_ZOOM) {
+            curTilt = MIN_TILT;
+        } else {
+            float m = (MAX_TILT - MIN_TILT) / (MAX_ZOOM - MIN_ZOOM);
+            curTilt = m * (curZoom - MIN_ZOOM) + MIN_TILT;
+        }
+
+        final CameraPosition movement = new CameraPosition.Builder()
+                .target(location)
+                .zoom(curZoom)
+                .tilt(curTilt)
+                .build();
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(movement));
+            }
+        });
+    }
+
+    private CameraPosition mPreviousCamera = null;
+    private CameraPosition mCurrentCamera = null;
+    private Handler mCameraHandler = new Handler();
+    private boolean mAnimationEndHandled = false;
+    private Runnable mCameraCheckRunnable = new Runnable() {
+        @Override
+        public void run() {
+            checkCameraAnimating();
+        }
+    };
+
+    public void checkCameraAnimating() {
+        if (mPreviousCamera == null || animationInProgress(mCurrentCamera)) {
+            mPreviousCamera = mCurrentCamera;
+            if (mAnimationEndHandled)
+            mAnimationEndHandled = false;
+            mCameraHandler.postDelayed(mCameraCheckRunnable, 30);
+        } else if (!mAnimationEndHandled) {
+            mAnimationEndHandled = true;
+            onCameraAnimationEnd();
+        }
+    }
+
+    private boolean animationInProgress(CameraPosition pos) {
+        if (mPreviousCamera.zoom != pos.zoom)
+            return true;
+
+        if (!mPreviousCamera.target.equals(pos.target))
+            return true;
+
         return false;
     }
 
