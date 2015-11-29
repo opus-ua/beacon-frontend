@@ -56,6 +56,21 @@ public class JsonMsg {
         public void setBeacons(BeaconThumb[] beacons) { _beacons = beacons; }
     }
 
+    public static class PostCommentRequest {
+        public PostCommentRequest(int beaconID, String text) {
+            _beaconid = beaconID;
+            _text = text;
+        }
+
+        private int _beaconid;
+        private String _text;
+
+        public int getBeaconid() { return _beaconid; }
+        public void setBeaconid(int beaconid) { _beaconid = beaconid; }
+        public String getText() { return _text; }
+        public void setText(String text) { _text = text; }
+    }
+
     public static class ErrorResp {
         public ErrorResp() {}
 

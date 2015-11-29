@@ -55,6 +55,12 @@ public class BeaconRestClient extends RestClient {
         RestResponse resp = send(req);
         return resp.getJson(JsonMsg.CreateAccountResponse.class);
     }
+
+    public void postComment(JsonMsg.PostCommentRequest comment) throws RestException {
+        RestRequest req = post(URI("comment"));
+        req.writeJson(comment);
+        send(req);
+    }
 }
 
 

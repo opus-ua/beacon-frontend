@@ -31,4 +31,7 @@
     <string name="preference_secret">secret_value</string>
     <string name="username_input">username</string>
     <string name="title_activity_map">Map</string>
+    <string name="comment_text">Comment</string>
+    <string name="submit_text">Submit</string>
+
 </resources>

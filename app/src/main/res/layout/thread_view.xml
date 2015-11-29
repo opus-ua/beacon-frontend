@@ -1,19 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="@dimen/listViewPadding"
-        android:paddingRight="@dimen/listViewPadding">
-        <ListView
+        android:layout_height="wrap_content"
+        android:id="@+id/commentListView"
+        android:layout_above="@+id/comment_layout">
+    </ListView>
+    <RelativeLayout
+        android:layout_height="@dimen/textbox_height"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/comment_layout">
+        <EditText android:id="@+id/comment_textbox"
+            android:inputType="textMultiLine|textCapSentences"
+            android:layout_height="@dimen/textbox_height"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/dialog_holo_light_frame"
-            android:id="@+id/commentListView">
-        </ListView>
-    </LinearLayout>
-</LinearLayout>
+            android:hint="@string/comment_text"
+            android:layout_alignParentBottom="true"
+            android:maxLines="4"
+            android:background="@drawable/border"
+            android:padding="10dp"/>
+        <Button android:id="@+id/submit_button"
+            android:layout_alignParentBottom="true"
+            android:text="submit"
+            android:layout_height="@dimen/textbox_height"
+            android:layout_width="@dimen/textbox_height"
+            android:layout_alignRight="@+id/comment_textbox"
+            android:onClick="submitComment"/>
+    </RelativeLayout>
+</RelativeLayout>
