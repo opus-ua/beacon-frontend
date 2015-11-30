@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Beacon</string>
 
+
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
@@ -30,4 +31,10 @@
     <string name="preference_user_id">user_id_value</string>
     <string name="preference_secret">secret_value</string>
     <string name="username_input">username</string>
+
+    <string name="request_permission">Requesting Permission</string>
+    <string name="camera_error">Camera Error</string>
+    <string name="takePicture">Take Picture</string>
+    <string name="submitBeacon">Submit Beacon</string>
+    <string name="no_location_detected">Unable to detect a location</string>
 </resources>

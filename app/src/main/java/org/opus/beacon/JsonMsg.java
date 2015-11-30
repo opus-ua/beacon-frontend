@@ -26,6 +26,55 @@ public class JsonMsg {
         public void setSecret(String secret) {_secret = secret;}
     }
 
+    public static class PostBeaconRequest {
+        private int userid;
+        private String text;
+        private float latitude;
+        private float longitude;
+
+        public float getLongitude() {return longitude;}
+        public void setLongitude(float _longitude) {this.longitude = _longitude;}
+        public float getLatitude() {return latitude;}
+        public void setLatitude(float _latitude) {this.latitude = _latitude;}
+        public String getText() {return text;}
+        public void setText(String _text) {this.text = _text;}
+        public int getUserid() {return userid;}
+        public void setUserid(int _userid) {this.userid = _userid;}
+
+        public PostBeaconRequest(int _userid, String _text, float _latitude, float _longitude) {
+            this.userid = _userid;
+            this.text = _text;
+            this.latitude = _latitude;
+            this.longitude = _longitude;
+        }
+
+    }
+
+    public static class BeaconResponse {
+        private int id;
+        private int userid;
+        private String username;
+        private String text;
+        private double latitude;
+        private double longitude;
+        private String time;
+        public double getLatitude() {return latitude;}
+        public void setLatitude(double latitude) {this.latitude = latitude;}
+        public int getId() {return id;}
+        public void setId(int id) {this.id = id;}
+        public int getUserid() {return userid;}
+        public void setUserid(int userid) {this.userid = userid;}
+        public String getUsername() {return username;}
+        public void setUsername(String username) {this.username = username;}
+        public String getText() {return text;}
+        public void setText(String text) {this.text = text;}
+        public double getLongitude() {return longitude;}
+        public void setLongitude(double longitude) {this.longitude = longitude;}
+        public String getTime() {return time;}
+        public void setTime(String time) {this.time = time;}
+
+    }
+
     public static class ErrorResp {
         public ErrorResp() {}
 

@@ -24,8 +24,15 @@ public class LaunchActivity extends Activity {
 
     public void onLaunchButtonClick(View view) {
         Intent launchThreadView = new Intent(this, ThreadView.class);
-        launchThreadView.putExtra("beaconID",1);
+        launchThreadView.putExtra("beaconID", 1);
         startActivity(launchThreadView);
+    }
+
+    public void onBeaconSubmissionView (View view) {
+        Intent launchBeaconSubmissionView = new Intent(this, BeaconSubmissionView.class);
+        startActivity(launchBeaconSubmissionView);
+
+
     }
 }
 
