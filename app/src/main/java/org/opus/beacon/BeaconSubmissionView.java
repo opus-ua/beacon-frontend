@@ -79,6 +79,7 @@ public class BeaconSubmissionView extends Activity
             return;
         }
         buildGoogleApiClient();
+        onTakePicture();
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -124,7 +125,7 @@ public class BeaconSubmissionView extends Activity
         Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
     }
 
-    public void onTakePicture(View view) {
+    public void onTakePicture() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) !=
                 PackageManager.PERMISSION_GRANTED) {
 
