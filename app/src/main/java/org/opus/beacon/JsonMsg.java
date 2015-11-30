@@ -46,8 +46,6 @@ public class JsonMsg {
         public void setRadius(float radius) { _radius = radius; }
     }
 
-
-
     public static class LocalBeaconResponse {
         public LocalBeaconResponse() {}
 
@@ -71,6 +69,37 @@ public class JsonMsg {
         public void setText(String text) { _text = text; }
     }
 
+    public static class PostBeaconRequest {
+        private int userid;
+        private String text;
+        private float latitude;
+        private float longitude;
+
+        public float getLongitude() {return longitude;}
+        public void setLongitude(float _longitude) {this.longitude = _longitude;}
+        public float getLatitude() {return latitude;}
+        public void setLatitude(float _latitude) {this.latitude = _latitude;}
+        public String getText() {return text;}
+        public void setText(String _text) {this.text = _text;}
+        public int getUserid() {return userid;}
+        public void setUserid(int _userid) {this.userid = _userid;}
+
+        public PostBeaconRequest(int _userid, String _text, float _latitude, float _longitude) {
+            this.userid = _userid;
+            this.text = _text;
+            this.latitude = _latitude;
+            this.longitude = _longitude;
+        }
+
+    }
+
+    public static class BeaconResponse {
+        private int id;
+        public BeaconResponse(){}
+        public int getId() {return id;}
+        public void setId(int id) {this.id = id;}
+    }
+
     public static class ErrorResp {
         public ErrorResp() {}
 
@@ -82,5 +111,4 @@ public class JsonMsg {
         public int getCode() { return _code; }
         public void setCode(int code) {_code = code;}
     }
-
 }

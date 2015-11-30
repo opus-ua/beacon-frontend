@@ -25,6 +25,17 @@ public class BeaconRestClient extends RestClient {
         return thread;
     }
 
+    public int postBeacon(JsonMsg.PostBeaconRequest beaconRequest, Bitmap image) throws RestException {
+        RestRequest request = post(URI("beacon"));
+        request.addPartJson(beaconRequest);
+        request.addPartImage(image);
+        request.finalizeMultipart();
+        RestResponse response = send(request);
+        JsonMsg.BeaconResponse result = response.getJson(JsonMsg.BeaconResponse.class);
+        return result.getId();
+
+    }
+
     public void heartPost(String postID) throws RestException {
         send(post(URI("heart", postID)));
     }

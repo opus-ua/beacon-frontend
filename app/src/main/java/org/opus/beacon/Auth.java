@@ -25,4 +25,5 @@ public class Auth {
 
     public String getId() {return Integer.toString(userId);}
     public String getSecret() {return userSecret;}
+    public int getIntId() {return userId;}
 }

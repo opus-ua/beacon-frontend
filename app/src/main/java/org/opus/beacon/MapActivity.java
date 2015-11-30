@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import android.location.LocationManager;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -268,5 +269,10 @@ public class MapActivity extends FragmentActivity
                 toastError(err.getMessage());
             }
         }
+    }
+
+    public void launchCameraView(View view) {
+        Intent launchCamera  = new Intent(this, BeaconSubmissionView.class);
+        startActivity(launchCamera);
     }
 }
