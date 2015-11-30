@@ -12,4 +12,5 @@
     <dimen name="commentHeight">75dp</dimen>
     <dimen name="textIndent">12dp</dimen>
     <dimen name="heartCountWidth">30dp</dimen>
+    <dimen name="textbox_height">50dp</dimen>
 </resources>

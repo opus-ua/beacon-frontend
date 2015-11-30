@@ -10,7 +10,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
-
+import org.apache.http.message.BasicHeader;
 import java.io.ByteArrayOutputStream;
 
 public class RestRequest {
@@ -33,6 +33,7 @@ public class RestRequest {
             String jsonStr = mapper.writeValueAsString(obj);
             HttpEntity entity = new ByteArrayEntity(jsonStr.getBytes("UTF-8"));
             request.setEntity(entity);
+            request.addHeader("Content-Type", "application/json");
         } catch (Exception e) {
             throw new RestException(RestException.JsonError, e.getMessage());
         }

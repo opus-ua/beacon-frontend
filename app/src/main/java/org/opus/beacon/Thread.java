@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class Thread {
@@ -25,6 +26,12 @@ public class Thread {
     private Bitmap image;
 
     public Thread() {
+    }
+
+    public void addComment(Comment c) {
+        ArrayList<Comment> commentList = new ArrayList<Comment>(Arrays.asList(comments));
+        commentList.add(c);
+        comments = (Comment[]) commentList.toArray();
     }
 
     public int getUserid() { return userid; }

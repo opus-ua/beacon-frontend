@@ -10,6 +10,8 @@ import android.os.Bundle;
 
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -22,8 +24,10 @@ public class ThreadView extends Activity {
     private Thread activeThread;
     private String postID;
     private Context context;
-    private BeaconRestClient client;
+    private BeaconRestClient mClient;
     private CommentAdapter mAdapter;
+    private int mBeaconID;
+    private View mThreadHeader = null;
     private static final String TAG = "ThreadView";
 
     @Override
@@ -31,12 +35,12 @@ public class ThreadView extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.thread_view);
         Intent activityThatCalled = getIntent();
-        int beaconID = activityThatCalled.getExtras().getInt("beaconID");
-        postID = Integer.toString(beaconID);
+        mBeaconID = activityThatCalled.getExtras().getInt("beaconID");
+        postID = Integer.toString(mBeaconID);
         context = this;
         try {
             Auth auth = new Auth(context);
-            client = new BeaconRestClient(auth.getId(), auth.getSecret());
+            mClient = new BeaconRestClient(auth.getId(), auth.getSecret());
         } catch(Exception e) {
             finish();
             return;
@@ -93,12 +97,55 @@ public class ThreadView extends Activity {
         mAdapter.notifyDataSetChanged();
     }
 
+    public void submitComment(View view) {
+        final EditText commentTextInput = (EditText) findViewById(R.id.comment_textbox);
+        String commentText = commentTextInput.getText().toString();
+
+        if (commentText == "")
+            return;
+
+        commentTextInput.setText("");
+        final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(commentTextInput.getWindowToken(), 0);
+        JsonMsg.PostCommentRequest commReq = new JsonMsg.PostCommentRequest(mBeaconID, commentText);
+        new PostComment().execute(commReq);
+    }
+
+    private void toastError(String err) {
+        Toast toast = Toast.makeText(context, err, Toast.LENGTH_SHORT);
+        TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+        v.setTextColor(Color.WHITE);
+        v.setBackgroundColor(0x00000000);
+        toast.show();
+    }
+
+    private class PostComment extends AsyncTask<JsonMsg.PostCommentRequest, Void, RestException> {
+        @Override
+        protected RestException doInBackground(JsonMsg.PostCommentRequest... params) {
+           try {
+                mClient.postComment(params[0]);
+                return null;
+           } catch (RestException err) {
+                return err;
+           }
+        }
+
+        @Override
+        protected void onPostExecute(RestException err) {
+            if (err == null) {
+                new GetActiveThread().execute();
+            } else if(err != null && err.shouldInformUser()) {
+                toastError(err.getMessage());
+            }
+        }
+    }
+
     private class GetActiveThread extends AsyncTask <Void, Void, Thread> {
         private boolean loaded = false;
         @Override
         protected Thread doInBackground(Void... params) {
             try {
-                Thread t = client.getThread(postID);
+                Thread t = mClient.getThread(postID);
                 loaded = true;
                 return t;
             } catch(final RestException e) {
@@ -125,7 +172,7 @@ public class ThreadView extends Activity {
             activeThread = thread;
             mAdapter = new CommentAdapter(context, activeThread.getComments());
             ListView comments = (ListView) findViewById(R.id.commentListView);
-            View header = (View)getLayoutInflater().inflate(R.layout.header, null);
+            View header = (View) getLayoutInflater().inflate(R.layout.header, null);
             ImageView threadImageView = (ImageView) header.findViewById(R.id.headerImage);
             TextView threadDesc = (TextView) header.findViewById(R.id.headerDesc);
             TextView threadUser = (TextView) header.findViewById(R.id.headerUser);
@@ -134,7 +181,12 @@ public class ThreadView extends Activity {
             threadDesc.setText(thread.getText());
             threadUser.setText(thread.getUsername());
             numHearts.setText(Integer.toString(thread.getHearts()));
+
+            if (mThreadHeader != null) {
+                comments.removeHeaderView(mThreadHeader);
+            }
             comments.addHeaderView(header);
+            mThreadHeader = header;
             comments.setAdapter(mAdapter);
             if (thread.getHearted()) {
                 HeartButton threadHeart = (HeartButton) findViewById(R.id.headerHeart);
@@ -148,9 +200,9 @@ public class ThreadView extends Activity {
         protected RestException doInBackground(String... params){
             try {
                 if (params[1] == "heart")
-                    client.heartPost(params[0]);
+                    mClient.heartPost(params[0]);
                 else
-                    client.unheartPost(params[0]);
+                    mClient.unheartPost(params[0]);
                 return null;
             } catch (RestException e) {
                 return e;

@@ -1,8 +1,10 @@
 package org.opus.beacon;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Location;
@@ -11,6 +13,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -34,7 +38,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class BeaconSubmissionView extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class BeaconSubmissionView extends Activity
+        implements GoogleApiClient.ConnectionCallbacks,
+        ActivityCompat.OnRequestPermissionsResultCallback,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "Beacon Submission View";
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -52,12 +59,10 @@ public class BeaconSubmissionView extends Activity implements GoogleApiClient.Co
     private double mLatitude;
     private double mLongitude;
 
-
-
+    private int ACCESS_CAMERA_TAG = 127;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.beacon_submission_view);
         Intent intent = getIntent();
@@ -120,9 +125,20 @@ public class BeaconSubmissionView extends Activity implements GoogleApiClient.Co
     }
 
     public void onTakePicture(View view) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) !=
+                PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA},
+                    ACCESS_CAMERA_TAG);
+        } else {
+            takePicture();
+        }
+    }
+
+    public void takePicture() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-
     }
 
     @Override
@@ -143,6 +159,16 @@ public class BeaconSubmissionView extends Activity implements GoogleApiClient.Co
         // attempt to re-establish the connection.
         Log.i(TAG, "Connection suspended");
         mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (requestCode != ACCESS_CAMERA_TAG)
+            return;
+
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            takePicture();
+        }
     }
 
     public void onSubmitBeacon(View v) {
@@ -191,7 +217,7 @@ public class BeaconSubmissionView extends Activity implements GoogleApiClient.Co
                 Intent launchThread = new Intent(context, ThreadView.class);
                 launchThread.putExtra("beaconID", newBeaconId);
                 startActivity(launchThread);
-
+                finish();
             }
         }
     }
