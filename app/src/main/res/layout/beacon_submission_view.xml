@@ -3,31 +3,26 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/takePictureButton"
-        android:text="@string/takePicture"
-        android:onClick="onTakePicture"
-        android:layout_gravity="center_horizontal"/>
+
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        android:id="@+id/thumbnail"/>
+        android:layout_height="450dp"
+        android:id="@+id/thumbnail"
+        android:layout_weight="0"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/descrBox" />
+        android:id="@+id/descrBox"
+        android:hint="@string/description_hint" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/submit_beacon"
         android:text="@string/submitBeacon"
         android:layout_gravity="center_horizontal"
-        android:onClick="onSubmitBeacon"/>
+        android:onClick="onSubmitBeacon"
+        android:layout_weight="1"/>
 
 </LinearLayout>

@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import android.location.LocationManager;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -127,7 +128,8 @@ public class MapActivity extends FragmentActivity
 
     @Override
     public void onLocationChanged(Location location) {
-        if (location.getAccuracy() > 150.0f)
+        Log.d("Map View", "Accuracy: " + Float.toString(location.getAccuracy()));
+        if (location.getAccuracy() > 200.0f)
             return;
 
         CameraPosition movement = new CameraPosition.Builder()
