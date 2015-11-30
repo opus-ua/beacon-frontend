@@ -52,26 +52,9 @@ public class JsonMsg {
 
     public static class BeaconResponse {
         private int id;
-        private int userid;
-        private String username;
-        private String text;
-        private double latitude;
-        private double longitude;
-        private String time;
-        public double getLatitude() {return latitude;}
-        public void setLatitude(double latitude) {this.latitude = latitude;}
+        public BeaconResponse(){}
         public int getId() {return id;}
         public void setId(int id) {this.id = id;}
-        public int getUserid() {return userid;}
-        public void setUserid(int userid) {this.userid = userid;}
-        public String getUsername() {return username;}
-        public void setUsername(String username) {this.username = username;}
-        public String getText() {return text;}
-        public void setText(String text) {this.text = text;}
-        public double getLongitude() {return longitude;}
-        public void setLongitude(double longitude) {this.longitude = longitude;}
-        public String getTime() {return time;}
-        public void setTime(String time) {this.time = time;}
 
     }
 

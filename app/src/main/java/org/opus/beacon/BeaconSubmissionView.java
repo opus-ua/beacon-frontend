@@ -45,6 +45,7 @@ public class BeaconSubmissionView extends Activity implements GoogleApiClient.Co
     private  Context context;
     private static BeaconRestClient client;
     private static int userId;
+    private static int newBeaconId;
     private static boolean pictureTaken;
 
     private Location mLastLocation;
@@ -159,7 +160,7 @@ public class BeaconSubmissionView extends Activity implements GoogleApiClient.Co
         @Override
         protected RestException doInBackground (JsonMsg.PostBeaconRequest... params){
             try {
-                client.postBeacon(params[0], imageBitmap);
+                newBeaconId = client.postBeacon(params[0], imageBitmap);
                 return null;
             } catch(final RestException e) {
                 if (e.shouldInformUser()) {
@@ -185,6 +186,12 @@ public class BeaconSubmissionView extends Activity implements GoogleApiClient.Co
             if(e != null && e.shouldInformUser()) {
                 Toast toast = Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT);
                 toast.show();
+            }
+            else {
+                Intent launchThread = new Intent(context, ThreadView.class);
+                launchThread.putExtra("beaconID", newBeaconId);
+                startActivity(launchThread);
+
             }
         }
     }
