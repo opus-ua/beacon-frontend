@@ -38,6 +38,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -64,7 +65,7 @@ public class BeaconSubmissionView extends Activity
     private double mLatitude;
     private double mLongitude;
 
-    private int ACCESS_CAMERA_TAG = 127;
+    private int ACCESS_PERMISSIONS = 127;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
@@ -131,12 +132,12 @@ public class BeaconSubmissionView extends Activity
     }
 
     public void onTakePicture() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) !=
-                PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CAMERA},
-                    ACCESS_CAMERA_TAG);
+                    new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    ACCESS_PERMISSIONS);
         } else {
             try {
                 takePicture();
@@ -148,57 +149,47 @@ public class BeaconSubmissionView extends Activity
         }
     }
 
-    public void takePicture(){
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    public void takePicture() {
         File photo;
-        try
-        {
+        try {
             photo = this.createTemporaryFile("picture", ".jpg");
             photo.delete();
         }
-        catch(Exception e)
-        {
-            Log.v(TAG, "Can't create file to take picture!");
-            Toast toast = Toast.makeText(context, "Please check SD card! Image shot is impossible!", Toast.LENGTH_SHORT);
+        catch (Exception e) {
+            Log.e(TAG, "Failed to save temporary file.", e);
+            Toast toast = Toast.makeText(context, "Failed to get image.", Toast.LENGTH_SHORT);
             toast.show();
+            finish();
             return;
         }
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         mImageUri = Uri.fromFile(photo);
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }
 
-    private File createTemporaryFile(String part, String ext) throws Exception
-    {
-        File tempDir= Environment.getExternalStorageDirectory();
-        tempDir=new File(tempDir.getAbsolutePath()+"/.temp/");
-        if(!tempDir.exists())
-        {
-            tempDir.mkdir();
-        }
+    private File createTemporaryFile(String part, String ext) throws IOException, IllegalArgumentException {
+        File tempDir = context.getExternalCacheDir();
         return File.createTempFile(part, ext, tempDir);
     }
 
-    public void grabImage(ImageView imageView)
-    {
+    public void grabImage(ImageView imageView) {
         this.getContentResolver().notifyChange(mImageUri, null);
         ContentResolver cr = this.getContentResolver();
         Bitmap bitmap;
-        try
-        {
+        try {
             bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri);
             imageBitmap = scalePic(bitmap);
             beaconImage.setImageBitmap(imageBitmap);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Failed to load", e);
         }
     }
 
-    private Bitmap scalePic(Bitmap source){
-        if (source.getWidth() >=2048 || source.getHeight() >= 2048){
+    private Bitmap scalePic(Bitmap source) {
+        if (source.getWidth() >= 2048 || source.getHeight() >= 2048){
             DisplayMetrics metrics = new DisplayMetrics();
             getWindowManager().getDefaultDisplay().getMetrics(metrics);
             int targetWidth = metrics.widthPixels;
@@ -214,6 +205,14 @@ public class BeaconSubmissionView extends Activity
             if (resultCode == RESULT_OK) {
                 this.grabImage(beaconImage);
                 pictureTaken = true;
+            } else if (resultCode == RESULT_CANCELED) {
+                finish();
+                return;
+            } else {
+                Log.d(TAG, "Could not retrieve image.");
+                Toast.makeText(context, "Could not retrieve image.", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -229,15 +228,25 @@ public class BeaconSubmissionView extends Activity
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        if (requestCode != ACCESS_CAMERA_TAG)
+        if (requestCode != ACCESS_PERMISSIONS)
             return;
 
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            try {
-                takePicture();
-            }catch (Exception e) {
+        if (grantResults.length == 0)
+            return;
 
-            }
+        for (int result : grantResults) {
+           if (result != PackageManager.PERMISSION_GRANTED) {
+               Log.d(TAG, "Was not granted permission to take picture.");
+               Toast.makeText(context, "Insufficient permissions to take picture.", Toast.LENGTH_SHORT).show();
+               return;
+           }
+        }
+
+        try {
+            takePicture();
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to take picture.", e);
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -247,7 +256,7 @@ public class BeaconSubmissionView extends Activity
             new SubmitBeacon().execute(newBeacon);
         }
         else {
-            Toast toast = Toast.makeText(context, "No picture taken",Toast.LENGTH_SHORT);
+            Toast.makeText(context, "No picture taken",Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -280,8 +289,7 @@ public class BeaconSubmissionView extends Activity
         @Override
         protected void onPostExecute (RestException e) {
             if(e != null && e.shouldInformUser()) {
-                Toast toast = Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT);
-                toast.show();
+                Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
             else {
                 Intent launchThread = new Intent(context, ThreadView.class);

@@ -39,5 +39,5 @@
     <string name="title_activity_map">Map</string>
     <string name="comment_text">Comment</string>
     <string name="submit_text">Submit</string>
-    <string name="description_hint">Description (Optional)</string>
+    <string name="description_hint">Description</string>
 </resources>
