@@ -81,6 +81,7 @@ public class MapActivity extends FragmentActivity
         super.onResume();
         setUpMapIfNeeded();
         GPS_WAIT = 1000;
+        mGpsWaitStart = -1;
         requestGPSUpdates();
     }
 
