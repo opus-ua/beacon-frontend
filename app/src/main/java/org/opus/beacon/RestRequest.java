@@ -69,7 +69,7 @@ public class RestRequest {
 
         try {
             ByteArrayOutputStream byteArrayBitmapStream = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayBitmapStream);
+            image.compress(Bitmap.CompressFormat.JPEG,80, byteArrayBitmapStream);
             byte[] imageBytes = byteArrayBitmapStream.toByteArray();
             getBuilder().addBinaryBody("image", imageBytes, ContentType.create("image/jpeg"), "image.jpg");
         } catch (Exception e) {
