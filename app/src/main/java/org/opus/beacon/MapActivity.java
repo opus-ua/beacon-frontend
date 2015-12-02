@@ -40,6 +40,11 @@ public class MapActivity extends FragmentActivity
     private LocationManager mLocationManager;
     private Context context;
 
+    private float GPS_ACCURACY = 300.0f; //meters
+    private long GPS_WAIT = 4000; //milliseconds
+
+    private long mGpsWaitStart = -1;
+
     private float MAX_ZOOM = 18.0f;
     private float MIN_ZOOM = 3.0f;
 
@@ -47,6 +52,8 @@ public class MapActivity extends FragmentActivity
     private float MIN_TILT = 0.0f;
 
     private int ACCESS_FINE_LOCATION_TAG = 125;
+
+    private boolean performedInitialZoom = false;
 
     private BeaconRestClient mClient;
     private Auth mAuth;
@@ -73,6 +80,8 @@ public class MapActivity extends FragmentActivity
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+        GPS_WAIT = 1000;
+        requestGPSUpdates();
     }
 
     private void setUpMapIfNeeded() {
@@ -94,11 +103,17 @@ public class MapActivity extends FragmentActivity
         mMap.getUiSettings().setRotateGesturesEnabled(false);
         mMap.getUiSettings().setTiltGesturesEnabled(false);
         mMap.getUiSettings().setCompassEnabled(false);
+        mMap.getUiSettings().setMapToolbarEnabled(false);
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        mMap.getUiSettings().setIndoorLevelPickerEnabled(false);
 
         // start at center of contiguous United States
         // this location should probably be a project-level property
         CameraUpdate center = CameraUpdateFactory.newLatLngZoom(new LatLng(39.8282f, -98.5795f), MIN_ZOOM);
-        mMap.moveCamera(center);
+
+        if (!performedInitialZoom) {
+            mMap.moveCamera(center);
+        }
 
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -125,16 +140,54 @@ public class MapActivity extends FragmentActivity
         toast.show();
     }
 
+    private boolean shouldUseLocation(Location location) {
+        long curTime = System.currentTimeMillis();
+        if (mGpsWaitStart == -1)
+            mGpsWaitStart = curTime;
+
+        if (curTime - mGpsWaitStart > GPS_WAIT)
+            return true;
+
+        if (location.getAccuracy() < GPS_ACCURACY)
+            return true;
+
+        return false;
+    }
+
     @Override
     public void onLocationChanged(Location location) {
-        if (location.getAccuracy() > 150.0f)
+        if (!shouldUseLocation(location))
             return;
 
+        float zoom;
+        if (!performedInitialZoom) {
+            zoom = MAX_ZOOM;
+            performedInitialZoom = true;
+        } else {
+            zoom = mCurrentCamera.zoom;
+        }
+
+        LatLng lastLocation = mCurrentCamera.target;
+        LatLng newLocation = new LatLng(location.getLatitude(), location.getLongitude());
+
+        float[] results = new float[1];
+        Location.distanceBetween(newLocation.latitude,
+                newLocation.longitude,
+                lastLocation.latitude,
+                lastLocation.longitude,
+                results);
+        float dist = results[0];
+
+        if (dist < 30.0f) {
+            newLocation = lastLocation;
+        }
+
         CameraPosition movement = new CameraPosition.Builder()
-                .target(new LatLng(location.getLatitude(), location.getLongitude()))
-                .zoom(MAX_ZOOM)
+                .target(newLocation)
+                .zoom(zoom)
                 .tilt(MAX_TILT)
                 .build();
+
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(movement), 2000, null);
         mLocationManager.removeUpdates(this);
         new GetLocalBeacons().execute(location);
@@ -242,6 +295,15 @@ public class MapActivity extends FragmentActivity
         return false;
     }
 
+    private boolean thumbOnMap(BeaconThumb thumb) {
+        for(BeaconThumb thumbOnMap : mMarkerHash.values()) {
+            if (thumbOnMap.getId() == thumb.getId())
+                return true;
+        }
+
+        return false;
+    }
+
     private class GetLocalBeacons extends AsyncTask<Location, Void, RestException> {
         @Override
         protected RestException doInBackground(Location... params) {
@@ -251,9 +313,11 @@ public class MapActivity extends FragmentActivity
                     @Override
                     public void run() {
                         for (BeaconThumb thumb : thumbs) {
-                            Marker marker = mMap.addMarker(new MarkerOptions()
-                                    .position(new LatLng(thumb.getLatitude(), thumb.getLongitude())));
-                            mMarkerHash.put(marker, thumb);
+                            if (!thumbOnMap(thumb)) {
+                                Marker marker = mMap.addMarker(new MarkerOptions()
+                                        .position(new LatLng(thumb.getLatitude(), thumb.getLongitude())));
+                                mMarkerHash.put(marker, thumb);
+                            }
                         }
                     }
                 });
