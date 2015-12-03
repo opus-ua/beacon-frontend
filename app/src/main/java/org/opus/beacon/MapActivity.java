@@ -121,6 +121,10 @@ public class MapActivity extends FragmentActivity
 
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
+        requestGPSUpdates();
+    }
+
+    private void requestGPSUpdates() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED) {
 
@@ -128,12 +132,8 @@ public class MapActivity extends FragmentActivity
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_TAG);
         } else {
-            requestGPSUpdates();
+            mLocationManager.requestLocationUpdates(mLocationManager.GPS_PROVIDER, 1000, 1, this);
         }
-    }
-
-    private void requestGPSUpdates() {
-        mLocationManager.requestLocationUpdates(mLocationManager.GPS_PROVIDER, 1000, 1, this);
     }
 
     public void toastError(String err) {
