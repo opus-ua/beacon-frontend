@@ -1,26 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/thumbnail" />
+        android:id="@+id/thumbnail"
+        android:scaleType="fitXY"
+        android:layout_weight="1"/>
 
-    <EditText
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_height="@dimen/textbox_height"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/descrBox"
-        android:hint="@string/description_hint" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/submit_beacon"
-        android:text="@string/submitBeacon"
-        android:layout_gravity="center_horizontal"
-        android:onClick="onSubmitBeacon" />
+        android:id="@+id/descritpion_layout"
+        android:background="@drawable/textbox_back"
+        android:layout_gravity="bottom">
+
+        <EditText android:id="@+id/description_textbox"
+            android:inputType="textMultiLine|textCapSentences"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:hint="@string/description_hint"
+            android:layout_alignParentBottom="true"
+            android:maxLines="4"
+            android:background="@null"
+            android:textSize="@dimen/descriptionSize"
+            android:padding="@dimen/textbox_padding"/>
+
+        <ImageButton android:id="@+id/submit_button"
+            android:layout_height="@dimen/textbox_height"
+            android:layout_width="@dimen/textbox_height"
+            android:onClick="onSubmitBeacon"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:src="@drawable/comment_submit"/>
+
+    </RelativeLayout>
 
 </LinearLayout>
