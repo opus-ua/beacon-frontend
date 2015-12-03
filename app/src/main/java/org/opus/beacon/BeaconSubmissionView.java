@@ -76,7 +76,7 @@ public class BeaconSubmissionView extends Activity
         setContentView(R.layout.beacon_submission_view);
         Intent intent = getIntent();
         beaconImage = (ImageView) findViewById(R.id.thumbnail);
-        descriptionBox = (EditText) findViewById(R.id.descrBox);
+        descriptionBox = (EditText) findViewById(R.id.description_textbox);
         pictureTaken = false;
         context = this;
         try {
