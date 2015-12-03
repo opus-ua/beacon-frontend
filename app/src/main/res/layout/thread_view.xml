@@ -12,25 +12,29 @@
         android:layout_above="@+id/comment_layout">
     </ListView>
     <RelativeLayout
+        android:orientation="horizontal"
         android:layout_height="@dimen/textbox_height"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
-        android:id="@+id/comment_layout">
+        android:id="@+id/comment_layout"
+        android:background="@drawable/textbox_back">
         <EditText android:id="@+id/comment_textbox"
             android:inputType="textMultiLine|textCapSentences"
-            android:layout_height="@dimen/textbox_height"
+            android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:hint="@string/comment_text"
             android:layout_alignParentBottom="true"
             android:maxLines="4"
-            android:background="@drawable/border"
-            android:padding="10dp"/>
-        <Button android:id="@+id/submit_button"
-            android:layout_alignParentBottom="true"
-            android:text="submit"
+            android:background="@null"
+            android:textSize="@dimen/descriptionSize"
+            android:padding="@dimen/textbox_padding"/>
+        <ImageButton android:id="@+id/submit_button"
             android:layout_height="@dimen/textbox_height"
             android:layout_width="@dimen/textbox_height"
-            android:layout_alignRight="@+id/comment_textbox"
-            android:onClick="submitComment"/>
+            android:onClick="submitComment"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:background="@null"
+            android:src="@drawable/comment_submit"/>
     </RelativeLayout>
 </RelativeLayout>

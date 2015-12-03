@@ -15,7 +15,7 @@
 
     <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="@dimen/commentHeight"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@color/container_gray">
 
@@ -29,14 +29,18 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/headerUser"
                 android:paddingLeft="@dimen/textIndent"
+                android:paddingTop="@dimen/textIndent"
+                android:textSize="@dimen/usernameSize"
                 android:textStyle="bold"
+                android:textColor="@color/gunmetal"
                 android:layout_gravity="center_vertical"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/headerDesc"
                 android:textSize="@dimen/descriptionSize"
-                android:paddingLeft="@dimen/textIndent"/>
+                android:paddingLeft="@dimen/textIndent"
+                android:paddingBottom="@dimen/textIndent"/>
         </LinearLayout>
 
         <LinearLayout

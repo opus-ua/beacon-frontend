@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/commentHeight"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@color/container_white">
 
@@ -22,7 +22,10 @@
                 android:id="@+id/commentUser"
                 android:background="@color/container_white"
                 android:paddingLeft="@dimen/textIndent"
+                android:paddingTop="@dimen/textIndent"
+                android:textSize="@dimen/usernameSize"
                 android:textStyle="bold"
+                android:textColor="@color/gunmetal"
                 android:layout_gravity="center_vertical"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -30,7 +33,8 @@
                 android:id="@+id/commentText"
                 android:textSize="@dimen/descriptionSize"
                 android:background="@color/container_white"
-                android:paddingLeft="@dimen/textIndent"/>
+                android:paddingLeft="@dimen/textIndent"
+                android:paddingBottom="@dimen/textIndent"/>
         </LinearLayout>
 
         <LinearLayout
