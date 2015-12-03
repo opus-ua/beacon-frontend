@@ -71,10 +71,12 @@ android {
         debug {
             buildConfigField "String", "SERVER_CLIENT_ID", "\"${ServerClientID}\""
             buildConfigField "String", "SERVER_URL", "\"${ServerURL}\""
+            buildConfigField "String", "CLIENT_VERSION", "\"${getVersionString()}\""
         }
         release {
             buildConfigField "String", "SERVER_CLIENT_ID", "\"${ServerClientID}\""
             buildConfigField "String", "SERVER_URL", "\"${ServerURL}\""
+            buildConfigField "String", "CLIENT_VERSION", "\"${getVersionString()}\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

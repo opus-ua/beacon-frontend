@@ -5,12 +5,14 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.location.Location;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -38,6 +40,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -164,6 +167,7 @@ public class BeaconSubmissionView extends Activity
         }
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         mImageUri = Uri.fromFile(photo);
+        takePictureIntent.putExtra(MediaStore.EXTRA_SCREEN_ORIENTATION, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
     }
@@ -178,9 +182,30 @@ public class BeaconSubmissionView extends Activity
         ContentResolver cr = this.getContentResolver();
         Bitmap bitmap;
         try {
-            bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri);
-            imageBitmap = scalePic(bitmap);
+            File f = new File(mImageUri.getPath());
+            ExifInterface exif = new ExifInterface(f.getPath());
+            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            int angle = 0;
+            if (orientation == ExifInterface.ORIENTATION_ROTATE_90) {
+                angle = 90;
+            }
+            else if (orientation == ExifInterface.ORIENTATION_ROTATE_180) {
+                angle = 180;
+            }
+            else if (orientation == ExifInterface.ORIENTATION_ROTATE_270) {
+                angle = 270;
+            }
+
+            Matrix mat = new Matrix();
+            mat.postRotate(angle);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 2;
+            Bitmap bmp1 = BitmapFactory.decodeStream(new FileInputStream(f), null, options);
+            Bitmap bmp = Bitmap.createBitmap(bmp1, 0, 0, bmp1.getWidth(), bmp1.getHeight(), mat, true);
+            //bitmap = android.provider.MediaStore.Images.Media.getBitmap(cr, mImageUri);
+            imageBitmap = scalePic(bmp);
             beaconImage.setImageBitmap(imageBitmap);
+            imageBitmap = bmp;
         }
         catch (Exception e) {
             Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT).show();

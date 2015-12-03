@@ -53,6 +53,9 @@ public class BeaconRestClient extends RestClient {
         RestResponse resp = send(req);
         JsonMsg.LocalBeaconResponse respJson = resp.getPartJson(JsonMsg.LocalBeaconResponse.class);
         ArrayList<BeaconThumb> thumbs = new ArrayList<BeaconThumb>();
+        if (respJson.getBeacons() == null)
+            return thumbs;
+
         for (BeaconThumb thumb : respJson.getBeacons()) {
             thumb.img = resp.getPartImage();
             thumbs.add(thumb);
