@@ -99,9 +99,9 @@ public class ThreadView extends Activity {
 
     public void submitComment(View view) {
         final EditText commentTextInput = (EditText) findViewById(R.id.comment_textbox);
-        String commentText = commentTextInput.getText().toString();
+        String commentText = commentTextInput.getText().toString().trim();
 
-        if (commentText == "")
+        if (commentText == null || commentText == "" || commentText.length() == 0 || commentText.equals(""))
             return;
 
         commentTextInput.setText("");
