@@ -56,6 +56,7 @@ public class MapActivity extends FragmentActivity
 
     private boolean performedInitialZoom = false;
 
+
     private BeaconRestClient mClient;
     private Auth mAuth;
 
@@ -233,8 +234,33 @@ public class MapActivity extends FragmentActivity
     @Override
     public void onCameraChange(CameraPosition position) {
         mCurrentCamera = position;
+        loadNewBeacons(position);
         mCameraHandler.removeCallbacks(mCameraCheckRunnable);
         checkCameraAnimating();
+    }
+
+    private Location mLastLoad = null;
+    private void loadNewBeacons(CameraPosition position) {
+        if (mLastLoad == null)
+            return;
+
+        float[] results = new float[1];
+        Location.distanceBetween(mLastLoad.getLatitude(),
+                mLastLoad.getLongitude(),
+                position.target.latitude,
+                position.target.longitude,
+                results);
+        float dist = results[0];
+
+        // distance greater than a mile
+        Location newLocation = new Location("");
+        newLocation.setLatitude(position.target.latitude);
+        newLocation.setLongitude(position.target.longitude);
+
+        double zoomThreshold = (MAX_ZOOM + MIN_ZOOM) * 0.5f;
+        if (dist > 1609.0f && position.zoom > zoomThreshold) {
+            new GetLocalBeacons().execute(newLocation);
+        }
     }
 
     public void onCameraAnimationEnd() {
@@ -324,6 +350,7 @@ public class MapActivity extends FragmentActivity
                         }
                     }
                 });
+                mLastLoad = params[0];
                 return null;
             } catch (RestException e) {
                 return e;
