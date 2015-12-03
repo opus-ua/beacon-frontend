@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="20"
+   height="23"
+   id="svg4434"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="submit_button.svg">
+  <defs
+     id="defs4436" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="40.746227"
+     inkscape:cx="14.153086"
+     inkscape:cy="9.9628404"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     showborder="false"
+     inkscape:snap-page="true"
+     inkscape:window-width="1855"
+     inkscape:window-height="1056"
+     inkscape:window-x="65"
+     inkscape:window-y="37"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata4439">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-1029.3622)">
+    <path
+       style="fill:#57ad61;fill-opacity:1;stroke:none"
+       d="m 0.12893971,1048.0192 0.002073,-4.3431 2.47703359,-1.437 c 1.3623617,-0.7904 2.4770232,-1.4518 2.4770232,-1.47 0,-0.018 -1.1441313,-0.6758 -2.5425348,-1.4615 L 0,1037.879 l 0,-4.2845 c 0,-2.3564 0.04291426,-4.2608 0.09536501,-4.232 1.68365889,0.9251 19.83201999,11.1521 19.90406199,11.2163 0.05722,0.051 -4.176086,2.5971 -9.407385,5.6581 -5.2312845,3.0611 -9.72597221,5.6915 -9.98817416,5.8454 l -0.4767214,0.2799 0.002073,-4.3431 z"
+       id="path3819"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/jonathan/Documents/dev/opus/beacon-frontend/app/src/main/res/drawable/comment_submit.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+  </g>
+</svg>
