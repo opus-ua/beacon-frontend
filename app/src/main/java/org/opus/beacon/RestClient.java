@@ -38,11 +38,18 @@ public class RestClient {
         req.setHeader("Authorization", "Basic " + basicAuthStr.trim());
     }
 
+    protected void addUserAgent(RestRequest req) {
+        String version = BuildConfig.CLIENT_VERSION;
+        String userAgent = "Beacon Android Client " + version;
+        req.setHeader("User-Agent", userAgent.trim());
+    }
+
     protected RestResponse get(String url) throws RestException {
         try {
             HttpClient client = new DefaultHttpClient();
             RestRequest req = new RestRequest(new HttpGet(url));
             addAuth(req);
+            addUserAgent(req);
             HttpResponse rawResp = client.execute(req.getRawReq());
             RestResponse resp = new RestResponse(rawResp);
             processErrorMsg(resp);
@@ -56,6 +63,7 @@ public class RestClient {
         try {
             RestRequest req = new RestRequest(new HttpPost(url));
             addAuth(req);
+            addUserAgent(req);
             return req;
         } catch (Exception e) {
             throw new RestException(RestException.ProtocolError, e.getMessage());
