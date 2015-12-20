@@ -7,6 +7,11 @@ Users take a picture in-app. Beacon takes a geotag and posts it on the map.
 Beacons that are more popular are indicated on the map. You can select a beacon
 to see what people are saying about it and to add your own comment.
 
+A video demonstrating the current functionality can be found
+[here](https://www.youtube.com/watch?v=KVeSS2WxJBo).
+
+Apk's can be downloaded [here](http://bin.gnossen.com/beacon-frontend/).
+
 Beacon was started as a university project and as such, is not currently open
 for pull requests. In January 2016, however, Beacon will become open for
 contributions.
