@@ -320,6 +320,7 @@ public class BeaconSubmissionView extends Activity
                 Intent launchThread = new Intent(context, ThreadView.class);
                 launchThread.putExtra("beaconID", newBeaconId);
                 startActivity(launchThread);
+                setResult(RESULT_OK);
                 finish();
             }
         }

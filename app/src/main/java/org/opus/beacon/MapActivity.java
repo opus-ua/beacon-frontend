@@ -42,10 +42,8 @@ public class MapActivity extends FragmentActivity
     private LocationManager mLocationManager;
     private Context context;
 
-    private float GPS_ACCURACY = 300.0f; //meters
+    private float GPS_ACCURACY = 50.0f; //meters
     private long GPS_WAIT = 4000; //milliseconds
-
-    private long mGpsWaitStart = -1;
 
     private float MAX_ZOOM = 18.0f;
     private float MIN_ZOOM = 3.0f;
@@ -54,9 +52,9 @@ public class MapActivity extends FragmentActivity
     private float MIN_TILT = 0.0f;
 
     private int ACCESS_FINE_LOCATION_TAG = 125;
+    private int BEACON_SUBMISSION = 37;
 
     private boolean performedInitialZoom = false;
-
 
     private BeaconRestClient mClient;
     private Auth mAuth;
@@ -83,9 +81,14 @@ public class MapActivity extends FragmentActivity
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
-        GPS_WAIT = 1000;
-        mGpsWaitStart = -1;
-        requestGPSUpdates();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == BEACON_SUBMISSION && resultCode == RESULT_OK) {
+           localize();
+        }
     }
 
     private void setUpMapIfNeeded() {
@@ -121,10 +124,10 @@ public class MapActivity extends FragmentActivity
 
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        requestGPSUpdates();
+        localize();
     }
 
-    private void requestGPSUpdates() {
+    private void localize() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED) {
 
@@ -132,6 +135,7 @@ public class MapActivity extends FragmentActivity
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_TAG);
         } else {
+            mLocationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
             mLocationManager.requestLocationUpdates(mLocationManager.GPS_PROVIDER, 1000, 1, this);
         }
     }
@@ -145,25 +149,10 @@ public class MapActivity extends FragmentActivity
     }
 
     private boolean shouldUseLocation(Location location) {
-        long curTime = System.currentTimeMillis();
-        if (mGpsWaitStart == -1)
-            mGpsWaitStart = curTime;
-
-        if (curTime - mGpsWaitStart > GPS_WAIT)
-            return true;
-
-        if (location.getAccuracy() < GPS_ACCURACY)
-            return true;
-
-        return false;
+        return location.getAccuracy() < GPS_ACCURACY;
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-
-        if (!shouldUseLocation(location))
-            return;
-
+    private void zoomToLocation(Location location) {
         float zoom;
         if (!performedInitialZoom) {
             zoom = MAX_ZOOM;
@@ -172,19 +161,21 @@ public class MapActivity extends FragmentActivity
             zoom = mCurrentCamera.zoom;
         }
 
-        LatLng lastLocation = mCurrentCamera.target;
         LatLng newLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        if (mCurrentCamera != null) {
+            LatLng lastLocation = mCurrentCamera.target;
 
-        float[] results = new float[1];
-        Location.distanceBetween(newLocation.latitude,
-                newLocation.longitude,
-                lastLocation.latitude,
-                lastLocation.longitude,
-                results);
-        float dist = results[0];
+            float[] results = new float[1];
+            Location.distanceBetween(newLocation.latitude,
+                    newLocation.longitude,
+                    lastLocation.latitude,
+                    lastLocation.longitude,
+                    results);
+            float dist = results[0];
 
-        if (dist < 30.0f) {
-            newLocation = lastLocation;
+            if (dist < 30.0f) {
+                newLocation = lastLocation;
+            }
         }
 
         CameraPosition movement = new CameraPosition.Builder()
@@ -194,8 +185,34 @@ public class MapActivity extends FragmentActivity
                 .build();
 
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(movement), 2000, null);
+    }
+
+    private void performInitialZoom(Location location) {
+        zoomToLocation(location);
         mLocationManager.removeUpdates(this);
         new GetLocalBeacons().execute(location);
+    }
+
+    private Handler mLocalizationTimeoutHandler = null;
+
+    @Override
+    public void onLocationChanged(Location location) {
+        final Location loc = location;
+        if (mLocalizationTimeoutHandler == null) {
+            mLocalizationTimeoutHandler = new Handler();
+            mLocalizationTimeoutHandler.postDelayed( new Runnable() {
+                @Override
+                public void run() {
+                    performInitialZoom(loc);
+                }
+            }, GPS_WAIT);
+        }
+
+        if (!shouldUseLocation(location))
+            return;
+
+        performInitialZoom(location);
+        mLocalizationTimeoutHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -219,7 +236,7 @@ public class MapActivity extends FragmentActivity
             return;
 
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            requestGPSUpdates();
+            localize();
         }
     }
 
@@ -369,6 +386,6 @@ public class MapActivity extends FragmentActivity
 
     public void launchCameraView(View view) {
         Intent launchCamera  = new Intent(this, BeaconSubmissionView.class);
-        startActivity(launchCamera);
+        startActivityForResult(launchCamera, BEACON_SUBMISSION);
     }
 }
