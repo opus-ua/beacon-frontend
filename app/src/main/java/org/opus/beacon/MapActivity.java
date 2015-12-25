@@ -52,9 +52,9 @@ public class MapActivity extends FragmentActivity
     private float MIN_TILT = 0.0f;
 
     private int ACCESS_FINE_LOCATION_TAG = 125;
+    private int BEACON_SUBMISSION = 37;
 
     private boolean performedInitialZoom = false;
-
 
     private BeaconRestClient mClient;
     private Auth mAuth;
@@ -81,6 +81,14 @@ public class MapActivity extends FragmentActivity
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == BEACON_SUBMISSION && resultCode == RESULT_OK) {
+           localize();
+        }
     }
 
     private void setUpMapIfNeeded() {
@@ -116,10 +124,10 @@ public class MapActivity extends FragmentActivity
 
         mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        requestGPSUpdates();
+        localize();
     }
 
-    private void requestGPSUpdates() {
+    private void localize() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED) {
 
@@ -228,7 +236,7 @@ public class MapActivity extends FragmentActivity
             return;
 
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            requestGPSUpdates();
+            localize();
         }
     }
 
@@ -378,6 +386,6 @@ public class MapActivity extends FragmentActivity
 
     public void launchCameraView(View view) {
         Intent launchCamera  = new Intent(this, BeaconSubmissionView.class);
-        startActivity(launchCamera);
+        startActivityForResult(launchCamera, BEACON_SUBMISSION);
     }
 }
