@@ -12,8 +12,10 @@
         android:src="@drawable/camera_view"
         android:layout_width="63dp"
         android:layout_height="63dp"
+        android:layout_marginBottom="10dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:scaleType="fitCenter"
         android:onClick="launchCameraView"
         android:background="@null"/>
 </RelativeLayout>

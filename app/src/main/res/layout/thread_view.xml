@@ -31,9 +31,11 @@
         <ImageButton android:id="@+id/submit_button"
             android:layout_height="@dimen/textbox_height"
             android:layout_width="@dimen/textbox_height"
+            android:padding="@dimen/submission_button_padding"
             android:onClick="submitComment"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
+            android:scaleType="fitCenter"
             android:background="@null"
             android:src="@drawable/comment_submit"/>
     </RelativeLayout>

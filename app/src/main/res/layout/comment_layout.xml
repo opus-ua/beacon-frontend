@@ -45,8 +45,10 @@
             <org.opus.beacon.HeartButton
                 android:layout_width="@dimen/heartHeight"
                 android:layout_height="@dimen/heartHeight"
+                android:padding="@dimen/heart_padding"
                 android:id="@+id/commentHeart"
                 android:onClick="onCommentHeart"
+                android:scaleType="fitCenter"
                 android:background="@null"
                 android:layout_gravity="center"
                 android:src="@drawable/filled_heart"

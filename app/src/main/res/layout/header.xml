@@ -50,6 +50,8 @@
             <org.opus.beacon.HeartButton
                 android:layout_width="@dimen/heartHeight"
                 android:layout_height="@dimen/heartHeight"
+                android:padding="@dimen/heart_padding"
+                android:scaleType="fitCenter"
                 android:id="@+id/headerHeart"
                 android:onClick="onThreadHeart"
                 android:background="@null"

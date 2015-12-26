@@ -15,7 +15,7 @@
         android:orientation="horizontal"
         android:layout_height="@dimen/textbox_height"
         android:layout_width="match_parent"
-        android:id="@+id/descritpion_layout"
+        android:id="@+id/description_layout"
         android:background="@drawable/textbox_back"
         android:layout_gravity="bottom">
 
@@ -33,10 +33,12 @@
         <ImageButton android:id="@+id/submit_button"
             android:layout_height="@dimen/textbox_height"
             android:layout_width="@dimen/textbox_height"
+            android:padding="@dimen/submission_button_padding"
             android:onClick="onSubmitBeacon"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:background="@null"
+            android:scaleType="fitCenter"
             android:src="@drawable/comment_submit"/>
 
     </RelativeLayout>
