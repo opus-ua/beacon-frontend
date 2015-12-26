@@ -7,5 +7,7 @@
     <item name="heart_gray" type="color">#C0C0C0</item>
     <item name="gunmetal" type="color">#2C3539</item>
     <item name="gray" type="color">#808080</item>
+    <color name="primary">#66BB6A</color>
+    <color name="primary_dark">#1B5E20</color>
     <color name="control_background">#CC4285F4</color>
 </resources>
