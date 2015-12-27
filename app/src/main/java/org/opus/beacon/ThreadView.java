@@ -169,6 +169,7 @@ public class ThreadView extends Activity {
         @Override
         protected void onPostExecute(Thread thread) {
             Bitmap threadImage = thread.getImage();
+            thread.markOp();
             activeThread = thread;
             mAdapter = new CommentAdapter(context, activeThread.getComments());
             ListView comments = (ListView) findViewById(R.id.commentListView);

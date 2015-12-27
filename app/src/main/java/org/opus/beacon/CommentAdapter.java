@@ -1,6 +1,7 @@
 package org.opus.beacon;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,9 @@ public class CommentAdapter extends ArrayAdapter<Thread.Comment> {
 
         if (comment.getHearted())
             heart.heart();
+
+        if (comment.isOp())
+            commentUser.setTextColor(ContextCompat.getColor(getContext(), R.color.op_color));
 
         commentText.setText(comment.getText());
         commentUser.setText(comment.getUsername());
