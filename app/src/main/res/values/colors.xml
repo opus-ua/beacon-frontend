@@ -10,4 +10,6 @@
     <color name="primary">#66BB6A</color>
     <color name="primary_dark">#1B5E20</color>
     <color name="control_background">#CC4285F4</color>
+    <color name="op_text">#2C3539</color>
+    <color name="op_color">#2E7D32</color>
 </resources>

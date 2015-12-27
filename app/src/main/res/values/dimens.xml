@@ -2,17 +2,17 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="usernameSize">16sp</dimen>
+    <dimen name="usernameSize">14sp</dimen>
     <dimen name="descriptionSize">16sp</dimen>
     <dimen name="heartWidth">40dp</dimen>
-    <dimen name="heartHeight">30dp</dimen>
+    <dimen name="heartHeight">24dp</dimen>
     <dimen name="numHearts">14sp</dimen>
     <dimen name="listViewPadding">8dp</dimen>
     <dimen name="dividingLine">2dp</dimen>
     <dimen name="commentHeight">75dp</dimen>
     <dimen name="textIndent">12dp</dimen>
     <dimen name="heartCountWidth">30dp</dimen>
-    <dimen name="textbox_height">60dp</dimen>
+    <dimen name="textbox_height">52dp</dimen>
     <dimen name="textbox_padding">16dp</dimen>
     <dimen name="submission_button_padding">5dp</dimen>
     <dimen name="heart_padding">5dp</dimen>
@@ -26,4 +26,9 @@
     <dimen name="username_margin_bottom">20dp</dimen>
     <dimen name="existing_user_margin">5dp</dimen>
     <dimen name="existing_user_text_size">17sp</dimen>
+
+    <dimen name="heart_margin_right">14dp</dimen>
+    <dimen name="heart_margin_left">5dp</dimen>
+    <dimen name="heart_spacing">8dp</dimen>
+
 </resources>
