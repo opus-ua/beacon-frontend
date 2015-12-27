@@ -30,7 +30,7 @@
     <string name="preference_username">username_value</string>
     <string name="preference_user_id">user_id_value</string>
     <string name="preference_secret">secret_value</string>
-    <string name="username_input">username</string>
+    <string name="username_input">Username</string>
     <string name="request_permission">Requesting Permission</string>
     <string name="camera_error">Camera Error</string>
     <string name="takePicture">Take Picture</string>
@@ -40,4 +40,8 @@
     <string name="comment_text">Comment</string>
     <string name="submit_text">Submit</string>
     <string name="description_hint">Description</string>
+
+    <string name="logo_name">Beacon</string>
+    <string name="sign_up_text">Sign Up</string>
+    <string name="existing_user_text">Already have an account?</string>
 </resources>

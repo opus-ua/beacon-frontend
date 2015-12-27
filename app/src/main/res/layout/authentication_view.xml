@@ -11,18 +11,70 @@
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/username"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/username_input"
-            android:inputType="text" />
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5">
+            <ImageView
+                android:id="@+id/beacon_logo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:layout_marginTop="@dimen/logo_margin"
+                android:src="@drawable/ic_beacon_launcher"
+                />
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/sign_in_button"
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.5">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="@dimen/logo_name_text_size"
+                android:textStyle="bold"
+                android:layout_marginBottom="@dimen/logo_name_bottom_margin"
+                android:text="@string/logo_name"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/sign_up_margin"
+                android:textSize="@dimen/sign_up_text_size"
+                android:text="@string/sign_up_text"
+                />
+            <EditText
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/username_margin_horizontal"
+                android:layout_marginRight="@dimen/username_margin_horizontal"
+                android:layout_marginBottom="@dimen/username_margin_bottom"
+                android:hint="@string/username_input"
+                android:inputType="text" />
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/sign_in_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="visible" />
+
+
+        </LinearLayout>
+         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="visible" />
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_margin="@dimen/existing_user_margin"
+            android:textSize="@dimen/existing_user_text_size"
+            android:text="@string/existing_user_text"
+            />
     </LinearLayout>
 </LinearLayout>

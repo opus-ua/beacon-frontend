@@ -2,6 +2,8 @@ package org.opus.beacon;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -31,12 +33,19 @@ public class MapActivity extends LocalizingMap
     private BeaconRestClient mClient;
     private Auth mAuth;
     private HashMap<Marker, BeaconThumb> mMarkerHash;
+    private Bitmap mScaledMarker = null;
+    private int BEACON_MARKER_WIDTH = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
         mMarkerHash = new HashMap<Marker, BeaconThumb>();
+
+        Bitmap markerBmp = BitmapFactory.decodeResource(getResources(), R.drawable.beacon_marker);
+        float aspect = (float)markerBmp.getWidth() / (float)markerBmp.getHeight();
+        int markerHeight = (int)(BEACON_MARKER_WIDTH / aspect);
+        mScaledMarker = Bitmap.createScaledBitmap(markerBmp, BEACON_MARKER_WIDTH, markerHeight, false);
 
         try {
             mAuth = new Auth(this);
@@ -113,6 +122,13 @@ public class MapActivity extends LocalizingMap
         return false;
     }
 
+    private void putBeaconMarker(BeaconThumb thumb) {
+        Marker marker = mMap.addMarker(new MarkerOptions()
+            .position(new LatLng(thumb.getLatitude(), thumb.getLongitude()))
+            .icon(BitmapDescriptorFactory.fromBitmap(mScaledMarker)));
+        mMarkerHash.put(marker, thumb);
+    }
+
     private class GetLocalBeacons extends AsyncTask<Location, Void, RestException> {
         @Override
         protected RestException doInBackground(Location... params) {
@@ -123,10 +139,7 @@ public class MapActivity extends LocalizingMap
                     public void run() {
                         for (BeaconThumb thumb : thumbs) {
                             if (!thumbOnMap(thumb)) {
-                                Marker marker = mMap.addMarker(new MarkerOptions()
-                                        .position(new LatLng(thumb.getLatitude(), thumb.getLongitude()))
-                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.beacon_marker)));
-                                mMarkerHash.put(marker, thumb);
+                                putBeaconMarker(thumb);
                             }
                         }
                     }

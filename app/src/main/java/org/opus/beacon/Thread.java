@@ -29,9 +29,21 @@ public class Thread {
     }
 
     public void addComment(Comment c) {
+        if (c.getUserid() == this.getUserid()) {
+            c.setOp();
+        }
+
         ArrayList<Comment> commentList = new ArrayList<Comment>(Arrays.asList(comments));
         commentList.add(c);
         comments = (Comment[]) commentList.toArray();
+    }
+
+    public void markOp() {
+        for(int i = 0; i < comments.length; i++) {
+           if (comments[i].getUserid() == this.getUserid()) {
+               comments[i].setOp();
+           }
+        }
     }
 
     public int getUserid() { return userid; }
@@ -92,16 +104,15 @@ public class Thread {
         private String username;
         private boolean hearted;
 
+        @JsonIgnore
+        private boolean isOp = false;
+
         public int getId() { return id; }
         public void setId(int id) { this.id = id; }
         public int getUserid() { return userid; }
         public void setUserid(int userid) { this.userid = userid; }
-        public int getHearts() {
-            return hearts;
-        }
-        public void setHearts(int hearts) {
-            this.hearts = hearts;
-        }
+        public int getHearts() { return hearts; }
+        public void setHearts(int hearts) { this.hearts = hearts; }
         public String getText() {
             return text;
         }
@@ -114,5 +125,8 @@ public class Thread {
         public void setUsername(String username) { this.username = username;}
         public boolean getHearted() { return hearted; }
         public void setHearted(boolean hearted) { this.hearted = hearted;}
+
+        public void setOp() { this.isOp = true; }
+        public boolean isOp() { return this.isOp; }
     }
 }
