@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="@dimen/info_window_width"
+    android:layout_height="wrap_content"
+    android:background="@color/container_white">
+
+    <ImageView
+        android:id="@+id/thumbnailImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/container_white">
+
+        <TextView
+            android:id="@+id/thumbnailTimestamp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@color/container_white"
+            android:text="2d ago" />
+
+        <TextView
+            android:id="@+id/thumbnailNumHearts"
+            android:layout_margin="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@color/container_white"
+            android:text="2" />
+
+        <ImageView
+            android:id="@+id/thumbnailHeart"
+            android:layout_margin="3dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center_vertical"
+            android:background="@color/container_white"
+            android:src="@drawable/filled_heart"
+            android:tint="@color/heart_gray" />
+    </LinearLayout>
+</LinearLayout>

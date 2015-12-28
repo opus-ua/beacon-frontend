@@ -25,7 +25,8 @@ import java.util.HashMap;
 
 
 public class MapActivity extends LocalizingMap
-    implements GoogleMap.OnMarkerClickListener {
+    implements GoogleMap.OnMarkerClickListener,
+        GoogleMap.OnInfoWindowClickListener {
 
     private Context context;
     private int BEACON_SUBMISSION = 37;
@@ -36,11 +37,17 @@ public class MapActivity extends LocalizingMap
     private Bitmap mScaledMarker = null;
     private int BEACON_MARKER_WIDTH = 100;
 
+    private BeaconInfoWindowAdapter mInfoWindowAdapter;
+
+    public MapActivity() {
+        context = this;
+        mMarkerHash = new HashMap<Marker, BeaconThumb>();
+        mInfoWindowAdapter = new BeaconInfoWindowAdapter(mMarkerHash, context);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
-        mMarkerHash = new HashMap<Marker, BeaconThumb>();
 
         Bitmap markerBmp = BitmapFactory.decodeResource(getResources(), R.drawable.beacon_marker);
         float aspect = (float)markerBmp.getWidth() / (float)markerBmp.getHeight();
@@ -59,6 +66,8 @@ public class MapActivity extends LocalizingMap
     protected void setUpMap() {
         super.setUpMap();
         mMap.setOnMarkerClickListener(this);
+        mMap.setOnInfoWindowClickListener(this);
+        mMap.setInfoWindowAdapter(mInfoWindowAdapter);
     }
 
     @Override
@@ -81,12 +90,17 @@ public class MapActivity extends LocalizingMap
     }
 
     @Override
-    public boolean onMarkerClick(Marker marker) {
+    public void onInfoWindowClick(Marker marker) {
         BeaconThumb thumb = mMarkerHash.get(marker);
         Intent launchThreadView = new Intent(this, ThreadView.class);
         launchThreadView.putExtra("beaconID", thumb.getId());
         startActivity(launchThreadView);
-        return false;
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        marker.showInfoWindow();
+        return true;
     }
 
     private Location mLastLoad = null;
