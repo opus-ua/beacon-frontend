@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
@@ -31,6 +32,20 @@ public class BeaconInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         int imgHeight = (int)(windowWidth / aspect);
         Bitmap scaledBmp = Bitmap.createScaledBitmap(thumb.img, (int)windowWidth, imgHeight, false);
         thumbImage.setImageBitmap(scaledBmp);
+
+        TextView numHeartsView = (TextView) window.findViewById(R.id.thumbnailNumHearts);
+        numHeartsView.setText(Integer.toString(thumb.getHearts()));
+
+        ImageView heartIcon = (ImageView) window.findViewById(R.id.thumbnailHeart);
+        if (thumb.getHearted()) {
+            heartIcon.setColorFilter(mContext.getResources().getColor(R.color.heart_red));
+        }
+
+        TextView numCommentsView = (TextView) window.findViewById(R.id.thumbnailNumComments);
+        numCommentsView.setText(Integer.toString(thumb.getComments()));
+
+        TextView timeView = (TextView) window.findViewById(R.id.thumbnailTimestamp);
+        timeView.setText(TimeFormatter.timeAgo(thumb.getTime()));
         return window;
     }
 

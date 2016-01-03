@@ -100,7 +100,7 @@ public class Thread {
         private int userid;
         private int hearts;
         private String text;
-        private String time;
+        private long time;
         private String username;
         private boolean hearted;
 
@@ -119,8 +119,8 @@ public class Thread {
         public void setText(String text) {
             this.text = text;
         }
-        public String getTime() { return time; }
-        public void setTime(String time) { this.time = time; }
+        public long getTime() { return time; }
+        public void setTime(long time) { this.time = time; }
         public String getUsername() { return username; }
         public void setUsername(String username) { this.username = username;}
         public boolean getHearted() { return hearted; }

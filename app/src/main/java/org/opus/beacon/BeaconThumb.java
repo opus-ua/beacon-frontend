@@ -12,6 +12,12 @@ public class BeaconThumb {
     public float _latitude;
     public float _longitude;
 
+    public int _hearts;
+    public long _time;
+    public String _username;
+    public boolean _hearted;
+    public int _comments;
+
     @JsonIgnore
     public Bitmap img;
 
@@ -25,4 +31,14 @@ public class BeaconThumb {
     public void setLatitude(float latitude) { _latitude = latitude; }
     public float getLongitude() { return _longitude; }
     public void setLongitude(float longitude) { _longitude = longitude; }
+    public int getHearts() { return _hearts; }
+    public void setHearts(int hearts) { _hearts = hearts; }
+    public long getTime() { return _time; }
+    public void setTime(long time) { _time = time; }
+    public String getUsername() { return _username; }
+    public void setUsername(String username) { _username = username; }
+    public boolean getHearted() { return _hearted; }
+    public void setHearted(boolean hearted) { _hearted = hearted; }
+    public int getComments() { return _comments; }
+    public void setComments(int comments) { _comments = comments; }
 }

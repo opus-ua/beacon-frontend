@@ -26,13 +26,13 @@ public class Comment {
         this.hearts = hearts;
     }
 
-    public void setTime(String time) {
+    public void setTime(long time) {
         this.time = time;
     }
 
     private int user;
     private int hearts;
-    private String time;
+    private long time;
     private boolean hearted;
 
 
@@ -53,11 +53,11 @@ public class Comment {
         return hearts;
     }
 
-    public String getTime() {
+    public long getTime() {
         return time;
     }
 
-    public Comment(String newComment, int newUser, int hearts, String time) {
+    public Comment(String newComment, int newUser, int hearts, long time) {
         this.text = newComment;
         this.user = newUser;
         this.hearts = hearts;
