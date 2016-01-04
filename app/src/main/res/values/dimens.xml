@@ -31,4 +31,6 @@
     <dimen name="heart_margin_left">5dp</dimen>
     <dimen name="heart_spacing">8dp</dimen>
 
+    <dimen name="info_window_width">140dp</dimen>
+    <dimen name="info_window_text_size">12sp</dimen>
 </resources>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="@dimen/info_window_width"
+    android:layout_height="wrap_content"
+    android:background="@color/container_white">
+
+    <ImageView
+        android:id="@+id/thumbnailImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:background="@color/container_white" />
+
+    <RelativeLayout
+        android:layout_width="@dimen/info_window_width"
+        android:layout_height="wrap_content"
+        android:background="@color/container_white">
+
+        <RelativeLayout
+            android:id="@+id/thumbnailHeartContainer"
+            android:background="@color/container_white"
+            android:layout_alignParentStart="true"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="2dp">
+            <TextView
+                android:id="@+id/thumbnailNumHearts"
+                android:layout_marginEnd="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textColor="@color/heart_gray"
+                android:background="@color/container_white"
+                android:textSize="@dimen/info_window_text_size"
+                android:text="0" />
+
+            <ImageView
+                android:id="@+id/thumbnailHeart"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_marginEnd="3dp"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:scaleType="fitCenter"
+                android:layout_toEndOf="@+id/thumbnailNumHearts"
+                android:layout_centerVertical="true"
+                android:background="@color/container_white"
+                android:src="@drawable/filled_heart"
+                android:tint="@color/heart_gray" />
+         </RelativeLayout>
+
+         <RelativeLayout
+             android:id="@+id/thumbnailCommentContainer"
+             android:background="@color/container_white"
+             android:layout_toEndOf="@+id/thumbnailHeartContainer"
+             android:layout_height="wrap_content"
+             android:layout_width="wrap_content"
+             android:layout_marginStart="2dp">
+            <TextView
+                android:id="@+id/thumbnailNumComments"
+                android:layout_marginEnd="3dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textColor="@color/heart_gray"
+                android:background="@color/container_white"
+                android:textSize="@dimen/info_window_text_size"
+                android:text="0" />
+
+            <ImageView
+                android:id="@+id/thumbnailComment"
+                android:layout_marginEnd="3dp"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:paddingTop="1dp"
+                android:paddingBottom="-1dp"
+                android:scaleType="fitCenter"
+                android:layout_toEndOf="@+id/thumbnailNumComments"
+                android:layout_centerVertical="true"
+                android:background="@color/container_white"
+                android:src="@drawable/comment"
+                android:tint="@color/heart_gray" />
+         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/thumbnailTimestamp"
+            android:layout_marginEnd="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/thumbnailCommentContainer"
+            android:layout_centerVertical="true"
+            android:background="@color/container_white"
+            android:gravity="end"
+            android:textColor="@color/heart_gray"
+            android:textSize="@dimen/info_window_text_size"
+            android:text="Just now" />
+
+
+    </RelativeLayout>
+</LinearLayout>

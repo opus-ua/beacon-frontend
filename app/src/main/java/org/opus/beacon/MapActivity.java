@@ -5,16 +5,21 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.VisibleRegion;
+
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -22,10 +27,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class MapActivity extends LocalizingMap
-    implements GoogleMap.OnMarkerClickListener {
+    implements GoogleMap.OnMarkerClickListener,
+        GoogleMap.OnInfoWindowClickListener {
 
     private Context context;
     private int BEACON_SUBMISSION = 37;
@@ -36,15 +43,21 @@ public class MapActivity extends LocalizingMap
     private Bitmap mScaledMarker = null;
     private int BEACON_MARKER_WIDTH = 100;
 
+    private BeaconInfoWindowAdapter mInfoWindowAdapter;
+
+    public MapActivity() {
+        context = this;
+        mMarkerHash = new HashMap<Marker, BeaconThumb>();
+        mInfoWindowAdapter = new BeaconInfoWindowAdapter(mMarkerHash, context);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
-        mMarkerHash = new HashMap<Marker, BeaconThumb>();
 
         Bitmap markerBmp = BitmapFactory.decodeResource(getResources(), R.drawable.beacon_marker);
-        float aspect = (float)markerBmp.getWidth() / (float)markerBmp.getHeight();
-        int markerHeight = (int)(BEACON_MARKER_WIDTH / aspect);
+        float aspect = (float) markerBmp.getWidth() / (float) markerBmp.getHeight();
+        int markerHeight = (int) (BEACON_MARKER_WIDTH / aspect);
         mScaledMarker = Bitmap.createScaledBitmap(markerBmp, BEACON_MARKER_WIDTH, markerHeight, false);
 
         try {
@@ -59,12 +72,14 @@ public class MapActivity extends LocalizingMap
     protected void setUpMap() {
         super.setUpMap();
         mMap.setOnMarkerClickListener(this);
+        mMap.setOnInfoWindowClickListener(this);
+        mMap.setInfoWindowAdapter(mInfoWindowAdapter);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == BEACON_SUBMISSION && resultCode == RESULT_OK) {
-           localize();
+            localize();
         }
     }
 
@@ -80,16 +95,37 @@ public class MapActivity extends LocalizingMap
         new GetLocalBeacons().execute(location);
     }
 
-    @Override
-    public boolean onMarkerClick(Marker marker) {
+    private void launchThreadViewForMarker(Marker marker) {
         BeaconThumb thumb = mMarkerHash.get(marker);
         Intent launchThreadView = new Intent(this, ThreadView.class);
         launchThreadView.putExtra("beaconID", thumb.getId());
         startActivity(launchThreadView);
-        return false;
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        launchThreadViewForMarker(marker);
+    }
+
+    private void moveTo(LatLng loc) {
+        putLatLngAtScreenCoords(loc, getSelectionCenter());
+    }
+
+    Marker mSelectedMarker = null;
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        if (!marker.isInfoWindowShown()) {
+            marker.showInfoWindow();
+            mSelectedMarker = marker;
+        } else {
+            launchThreadViewForMarker(marker);
+        }
+        moveTo(marker.getPosition());
+        return true;
     }
 
     private Location mLastLoad = null;
+
     private void loadNewBeacons(CameraPosition position) {
         if (mLastLoad == null)
             return;
@@ -111,6 +147,77 @@ public class MapActivity extends LocalizingMap
     public void onCameraChange(CameraPosition position) {
         super.onCameraChange(position);
         loadNewBeacons(position);
+        manageBeaconPreviews(position);
+    }
+
+    private void closeInfoWindow() {
+        mSelectedMarker = null;
+        for (Marker marker : mMarkerHash.keySet()) {
+            if (marker.isInfoWindowShown()) {
+                marker.hideInfoWindow();
+            }
+        }
+    }
+
+    private Point getSelectionCenter() {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+
+        // center circle at 1/2 width and 2/3 height (1/3 from bottom)
+        return new Point(width / 2, 2 * height / 3);
+    }
+
+    private float squaredDistFromSelectionCenter(LatLng loc) {
+        Projection projection = mMap.getProjection();
+        Point p = projection.toScreenLocation(loc);
+
+        Point center = getSelectionCenter();
+        Point dp = new Point(p.x - center.x, p.y - center.y);
+        return dp.x * dp.x + dp.y * dp.y;
+    }
+
+    private boolean inSelectionCircle(LatLng loc) {
+        float radius = BEACON_MARKER_WIDTH * 3.0f;
+        return squaredDistFromSelectionCenter(loc) < (radius * radius);
+    }
+
+    private void manageBeaconPreviews(CameraPosition position) {
+        if (mMarkerHash.size() == 0) {
+            return;
+        }
+
+        if (getZoomRatio(position) < 0.7f) {
+            closeInfoWindow();
+            return;
+        }
+
+        if (mSelectedMarker != null ) {
+           if (!inSelectionCircle(mSelectedMarker.getPosition())) {
+               mSelectedMarker = null;
+           } else {
+               return;
+           }
+        }
+
+        HashMap<Marker, Float> distances = new HashMap<Marker, Float>();
+        for (Map.Entry<Marker, BeaconThumb> entry : mMarkerHash.entrySet()) {
+            Marker marker = entry.getKey();
+            BeaconThumb thumb = entry.getValue();
+            LatLng beaconLoc = new LatLng(thumb.getLatitude(), thumb.getLongitude());
+            float distance = squaredDistFromSelectionCenter(beaconLoc);
+            distances.put(marker, distance);
+        }
+
+        ValueSortedMap<Marker, Float> sortedMap = new ValueSortedMap<>(distances);
+        Marker nearestMarker = sortedMap.firstKey();
+        if (nearestMarker != null && inSelectionCircle(nearestMarker.getPosition())) {
+            if (!nearestMarker.isInfoWindowShown()) {
+                nearestMarker.showInfoWindow();
+            }
+        } else {
+            closeInfoWindow();
+        }
     }
 
     private boolean thumbOnMap(BeaconThumb thumb) {

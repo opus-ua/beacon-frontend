@@ -11,6 +11,8 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
+import com.google.android.gms.maps.model.LatLng;
+
 abstract public class LocalizingMap extends ConstrainedCameraMap
     implements LocationListener,
     ActivityCompat.OnRequestPermissionsResultCallback {
@@ -45,7 +47,7 @@ abstract public class LocalizingMap extends ConstrainedCameraMap
     }
 
     private void performInitialZoom(Location location) {
-        zoomToLocation(location);
+        zoomToLocation(new LatLng(location.getLatitude(), location.getLongitude()));
         mLocationManager.removeUpdates(this);
         execute(location);
     }

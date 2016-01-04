@@ -13,8 +13,6 @@
         android:scaleType="fitXY">
     </ImageView>
 
-   // headerUser headerDesc headerHeart numHeaderHearts
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

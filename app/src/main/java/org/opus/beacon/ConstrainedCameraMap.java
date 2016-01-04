@@ -1,5 +1,6 @@
 package org.opus.beacon;
 
+import android.graphics.Point;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,9 +9,11 @@ import android.support.v4.app.FragmentActivity;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.VisibleRegion;
 
 public class ConstrainedCameraMap extends FragmentActivity
     implements GoogleMap.OnCameraChangeListener {
@@ -62,7 +65,27 @@ public class ConstrainedCameraMap extends FragmentActivity
         mMap.moveCamera(center);
     }
 
-    protected void zoomToLocation(Location location) {
+    protected void putLatLngAtScreenCoords(LatLng loc, Point target) {
+        LatLng curTarget = mMap.getCameraPosition().target;
+        Projection projection = mMap.getProjection();
+        double selectLat = projection.fromScreenLocation(target).latitude;
+
+        double targetLongitude = loc.longitude;
+        double targetLatitude = loc.latitude + (curTarget.latitude - selectLat);
+
+        LatLng latLngTarget = new LatLng(targetLatitude, targetLongitude);
+        float zoom = mMap.getCameraPosition().zoom;
+
+        CameraPosition movement = new CameraPosition.Builder()
+                .target(latLngTarget)
+                .zoom(zoom)
+                .tilt(zoomToTilt(zoom))
+                .build();
+
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(movement), 500, null);
+    }
+
+    protected void zoomToLocation(LatLng location) {
         float zoom;
         if (mCurrentCamera == null || mCurrentCamera.zoom < (MAX_ZOOM + MIN_ZOOM) / 2) {
             zoom = MAX_ZOOM;
@@ -70,7 +93,7 @@ public class ConstrainedCameraMap extends FragmentActivity
             zoom = mCurrentCamera.zoom;
         }
 
-        LatLng newLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        LatLng newLocation = location;
         if (mCurrentCamera != null) {
             LatLng lastLocation = mCurrentCamera.target;
             float dist = distanceBetween(location, lastLocation);
