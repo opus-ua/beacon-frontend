@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.VisibleRegion;
 
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -106,13 +107,20 @@ public class MapActivity extends LocalizingMap
         launchThreadViewForMarker(marker);
     }
 
+    private void moveTo(LatLng loc) {
+        putLatLngAtScreenCoords(loc, getSelectionCenter());
+    }
+
+    Marker mSelectedMarker = null;
     @Override
     public boolean onMarkerClick(Marker marker) {
         if (!marker.isInfoWindowShown()) {
             marker.showInfoWindow();
+            mSelectedMarker = marker;
         } else {
             launchThreadViewForMarker(marker);
         }
+        moveTo(marker.getPosition());
         return true;
     }
 
@@ -139,10 +147,11 @@ public class MapActivity extends LocalizingMap
     public void onCameraChange(CameraPosition position) {
         super.onCameraChange(position);
         loadNewBeacons(position);
-        openBeaconPreview(position);
+        manageBeaconPreviews(position);
     }
 
     private void closeInfoWindow() {
+        mSelectedMarker = null;
         for (Marker marker : mMarkerHash.keySet()) {
             if (marker.isInfoWindowShown()) {
                 marker.hideInfoWindow();
@@ -150,16 +159,20 @@ public class MapActivity extends LocalizingMap
         }
     }
 
-    private float squaredDistFromSelectionCenter(LatLng loc) {
-        Projection projection = mMap.getProjection();
-        Point p = projection.toScreenLocation(loc);
-
+    private Point getSelectionCenter() {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         int width = metrics.widthPixels;
         int height = metrics.heightPixels;
 
         // center circle at 1/2 width and 2/3 height (1/3 from bottom)
-        Point center = new Point(width / 2, 2 * height / 3);
+        return new Point(width / 2, 2 * height / 3);
+    }
+
+    private float squaredDistFromSelectionCenter(LatLng loc) {
+        Projection projection = mMap.getProjection();
+        Point p = projection.toScreenLocation(loc);
+
+        Point center = getSelectionCenter();
         Point dp = new Point(p.x - center.x, p.y - center.y);
         return dp.x * dp.x + dp.y * dp.y;
     }
@@ -169,14 +182,22 @@ public class MapActivity extends LocalizingMap
         return squaredDistFromSelectionCenter(loc) < (radius * radius);
     }
 
-    private void openBeaconPreview(CameraPosition position) {
+    private void manageBeaconPreviews(CameraPosition position) {
         if (mMarkerHash.size() == 0) {
             return;
         }
 
-        if (getZoomRatio(position) < 0.6f) {
+        if (getZoomRatio(position) < 0.7f) {
             closeInfoWindow();
             return;
+        }
+
+        if (mSelectedMarker != null ) {
+           if (!inSelectionCircle(mSelectedMarker.getPosition())) {
+               mSelectedMarker = null;
+           } else {
+               return;
+           }
         }
 
         HashMap<Marker, Float> distances = new HashMap<Marker, Float>();
@@ -184,7 +205,6 @@ public class MapActivity extends LocalizingMap
             Marker marker = entry.getKey();
             BeaconThumb thumb = entry.getValue();
             LatLng beaconLoc = new LatLng(thumb.getLatitude(), thumb.getLongitude());
-            // float distance = distanceBetween(beaconLoc, position.target);
             float distance = squaredDistFromSelectionCenter(beaconLoc);
             distances.put(marker, distance);
         }
